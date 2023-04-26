@@ -7,6 +7,10 @@ const cors = require('cors');
 const { Server } = require('socket.io'); // Add this
 const leaveRoom = require('./utils/leave-room'); // Add this
 
+const mongoose = require("mongoose");
+const dbConfig = require("./configs/database");
+const logger = require("morgan");
+
 app.use(cors()); // Add cors middleware
 
 const server = http.createServer(app); // Add this
@@ -90,3 +94,32 @@ io.on('connection', (socket) => {
 });
 
 server.listen(4000, () => 'Server is running on port 3000');
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: false }));
+app.use(logger("dev"));
+
+const PORT = process.env.PORT || 2555;
+app.listen(PORT, () => {
+  console.log(`Server is running on PORT ${PORT}`);
+});
+
+
+//connect mongodb atlas
+const mongo_uri = dbConfig.MONGODB_URI;
+mongoose.Promise = global.Promise;
+mongoose.connect(
+  mongo_uri,
+  { useNewUrlParser: true },
+  () => {
+    console.log("database connection established!\nuri: ", mongo_uri);
+  },
+  (e) => {
+    console.log("database connection error: ", e);
+  }
+);
+
+//mongodb error handler
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB error", err);
+});
