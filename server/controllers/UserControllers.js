@@ -14,11 +14,11 @@ const UserController = {
   async createUser(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const payload = req.body;
-      const checkDupeNickname = await User.findOne({
-        nickname: payload.nickname,
+      const checkDupeUsername = await User.findOne({
+        username: payload.username,
       });
-      if (checkDupeNickname)
-        throw new ApiErrorResponse("nickname already existed", 406);
+      if (checkDupeUsername)
+        throw new ApiErrorResponse("username already existed", 406);
       if (!payload.password)
         throw new ApiErrorResponse("please specify password", 400);
       if (payload.password.length < 6)
@@ -41,6 +41,25 @@ const UserController = {
   },
 
   /**
+   * getAllUsers
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllUsers(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const users = await User.find({});
+
+      return {
+        code: 200,
+        data: users,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
    * updateUserById
    * @param {import('express').Request} req
    * @param {import('express').Response} res
@@ -56,6 +75,24 @@ const UserController = {
         code: 204,
         data: updatedUser,
         message: "user updated",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * deleteUserById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async deleteAllUser(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const user = await User.deleteMany({});
+      return {
+        code: 200,
+        data: user,
+        message: "All users deleted",
       };
     });
     res.json(result);
