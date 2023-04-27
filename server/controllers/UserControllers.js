@@ -97,6 +97,67 @@ const UserController = {
     });
     res.json(result);
   },
+
+  /**
+   * getUserById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getUserById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+
+      return {
+        code: 200,
+        data: user,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * updateUserById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async updateUserById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const userId = req.params.id;
+      const payload = req.body;
+      await User.findByIdAndUpdate(userId, { $set: payload });
+      const updatedUser = await User.findById(userId);
+      return {
+        code: 204,
+        data: updatedUser,
+        message: "user updated",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * deleteUserById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async deleteUserById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const userId = req.params.id;
+      const user = await User.findByIdAndDelete(userId);
+
+      return {
+        code: 200,
+        data: user,
+        message: "user deleted",
+      };
+    });
+    res.json(result);
+  },
 };
 
 module.exports = UserController;

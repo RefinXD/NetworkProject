@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const logger = require("morgan");
 const mongoose = require("mongoose");
@@ -14,6 +15,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
 app.use(cors());
+app.use(cookieParser());
 app.use(MyLogger);
 
 // use express router
@@ -21,7 +23,7 @@ app.use("/api", apiRoute);
 app.use("/auth", authRoute);
 
 app.get("/", (req, res) => {
-  res.send("Hello World Tourister!");
+  res.send("Hello World Chatter!");
 });
 
 // Error handler
