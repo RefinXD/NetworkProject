@@ -16,6 +16,12 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Please add a password"],
     minlength : 6
   },
+  status:{
+    type: String,
+    enum: ['Online','Offline'],
+    required: [true, "Please add a password"],
+    default: 'Online'
+  }
   
 });
 

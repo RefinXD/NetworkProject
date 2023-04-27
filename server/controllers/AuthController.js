@@ -30,10 +30,11 @@ const AuthController = {
         delete userData.draft;
         delete userData.password;
         delete userData.image;
+      const onlineUser = await User.findOneAndUpdate({username:payload.username},{status:"Online"});
         const token = createToken(userData);
         return {
           code: 200,
-          data: user,
+          data: onlineUser,
           token: token,
           message: "login successful",
         };
