@@ -52,5 +52,37 @@ const AuthController = {
     console.log("login result", result);
     res.json(result);
   },
+
+  /**
+   * verifyToken
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async userVerifyToken(req, res, next) {
+    const token =
+      req.cookies.jwt ||
+      req.headers.authorization?.split(" ")[1] ||
+      req.body.token;
+    let result = undefined;
+    const data = verifyToken(token);
+
+    if (data != null) {
+      let user = await User.findById(data._id);
+      delete user.password;
+      delete user.draft;
+
+      result = {
+        code: 200,
+        data: user,
+        message: "token authorized",
+      };
+    } else
+      result = {
+        code: 401,
+        message: "token unauthorized",
+      };
+    res.json(result);
+  },
 };
-module.exports = AuthController
+module.exports = AuthController;
