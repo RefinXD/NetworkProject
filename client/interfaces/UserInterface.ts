@@ -1,6 +1,7 @@
 export interface UserInterface {
   _id?: string;
   nickname: string;
-  usesrname: string;
+  username: string;
   password: string;
+  status:string;
 }
