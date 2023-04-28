@@ -5,7 +5,7 @@ const logger = require("morgan");
 const mongoose = require("mongoose");
 const dbConfig = require("./configs/database");
 const MyLogger = require("./middlewares/myLogger");
-
+const leaveRoom = require("./utils/leave-room")
 const apiRoute = require("./routes/api");
 const authRoute = require("./routes/auth");
 const User = require("./model/User");
