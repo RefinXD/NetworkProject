@@ -18,6 +18,7 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
           placeholder="Username..."
           onChange={(e) => setUsername(e.target.value)}
         />
+        {/* <h2>{username}</h2> */}
 
         <select
           className={styles.input}
