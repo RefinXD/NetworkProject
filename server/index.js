@@ -92,15 +92,16 @@ const io = new Server(server, {
 // Listen for when the client connects via socket.io-client
 io.on("connection", (socket) => {
   console.log(`User connected ${socket.id}`);
-
-
+  // console.log("after join room")
   // We can write our socket event listeners in here...
   socket.on("join_room", (data) => {
+    // console.log("data from join room",data)
     const { username, room } = data; // Data sent from client when join_room event emitted
     socket.join(room);
     chatRoom = room;
     allUsers.push({ id: socket.id, username, room });
     chatRoomUsers = allUsers.filter((user) => user.room === room);
+    console.log("-----------chatroomuser-------",chatRoomUsers)
     socket.to(room).emit("chatroom_users", chatRoomUsers);
     socket.emit("chatroom_users", chatRoomUsers);
     let __createdtime__ = Date.now(); // Current timestamp
@@ -136,6 +137,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("User disconnected from the chat");
     const user = allUsers.find((user) => user.id == socket.id);
+    console.log("user",user)
     if (user?.username) {
       allUsers = leaveRoom(socket.id, allUsers);
       socket.to(chatRoom).emit("chatroom_users", allUsers);

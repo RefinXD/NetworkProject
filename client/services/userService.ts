@@ -120,9 +120,9 @@ export const deleteUserById = async (id: string) => {
   return res;
 };
 
-export const userLogin = async (email: string, password: string) => {
+export const userLogin = async (username: string, password: string) => {
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/auth/login`, {
-    email: email,
+    username: username,
     password: password,
   });
   const res = axios_res.data as ApiLoginResponseInterface;

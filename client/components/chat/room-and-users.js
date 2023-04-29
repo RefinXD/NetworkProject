@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 const RoomAndUsers = ({ socket, username, room }) => {
   const [roomUsers, setRoomUsers] = useState([]);
-
+  console.log("roomAnduser",username,"  ",room,"    ",socket);
   // const navigate = useNavigate();
   const router = useRouter();
 

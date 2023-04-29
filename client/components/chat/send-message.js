@@ -1,9 +1,10 @@
 import styles from './styles.module.css';
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+
 
 const SendMessage = ({ socket, username, room }) => {
   const [message, setMessage] = useState('');
-
+  console.log("send Message   ",username,room,socket);
   const sendMessage = () => {
     if (message !== '') {
       const __createdtime__ = Date.now();

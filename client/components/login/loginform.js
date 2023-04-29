@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-// import { userLogin } from "../../../services/userService";
+import { userLogin } from "../../services/userService";
+import { useRouter } from "next/router";
 
 
 function Login() {
@@ -13,14 +14,14 @@ function Login() {
 
   const { username, password } = formData;
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  useEffect(() => {
-    //redirect when logged in
-    if (localStorage.getItem("user")) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   //redirect when logged in
+  //   if (localStorage.getItem("user")) {
+  //     router.push('/')
+  //   }
+  // });
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -31,13 +32,23 @@ function Login() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
- 
-    // const response = await userLogin(username, password);
-    // console.log(response.data);
+    try {
+      const response = await userLogin(username,password);
+      console.log(response.data);
+  
+      localStorage.setItem("user", JSON.stringify(response.data));
+
+      console.log(localStorage.getItem("user"));
+      router.push('/home')
+
+    } catch (error) {
+      console.log(error);
+      window.alert(error);
+    }
+
 
     //save the user data in local storage
     // localStorage.setItem("user", JSON.stringify(response.data));
-    navigate("/");
   };
 
   return (

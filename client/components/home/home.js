@@ -1,38 +1,41 @@
 import styles from "./styles.module.css";
-// import { useNavigate } from 'react-router-dom';
 import { useRouter } from 'next/router'
-import { useState } from 'react'; // Add this
-// import logo from './logo.svg';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState ,useEffect} from 'react';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:4000'); // Add this -- our server will run on port 4000, so we connect to it from here
+const socket = io.connect('http://localhost:4000');
 
 const Home = () => {
-//   const navigate = useNavigate();
-
   const router = useRouter();
-  const [username, setUsername] = useState(''); // Add this
+  const [username, setUsername] = useState('');
+  const [userDetail,setUserDetail] = useState({});
   const [room, setRoom] = useState('');
 
-  const joinRoom = () => {
-    if (room !== "" && username !== "") {
-      socket.emit("join_room", { username, room });
-    //   navigate('/chat', { replace: true }); // Add this
-      router.push('/chat')
+  useEffect(() => {
+    const userDetail = localStorage.getItem('user');
+    if (userDetail) {
+      setUserDetail(JSON.parse(userDetail));
     }
+  }, []);
+
+  const joinRoom = () => {
+    console.log('test')
+    if (room !== "" && userDetail.nickname !== "") {
+      console.log('test2',room)
+      // setRoom(room); // set the value of the room state variable
+      socket.emit("join_room", { username: userDetail.nickname, room });
+      router.push({
+        pathname: `/chat`,
+        query: { username: userDetail.nickname, room: room },
+      });
+          }
   };
+  
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h1>{`<>DevRooms</>`}</h1>
-
-        <input
-          className={styles.input}
-          placeholder="Username..."
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
+        <h2>{userDetail.nickname}</h2>
         <select
           className={styles.input}
           onChange={(e) => setRoom(e.target.value)}
@@ -47,7 +50,7 @@ const Home = () => {
         <button
           className="btn btn-secondary"
           style={{ width: "100%" }}
-          onClick={joinRoom} // Add this
+          onClick={joinRoom}
         >
           Join Room
         </button>
