@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useState ,useEffect} from 'react';
 import socket from '../../utils/Utils';
 const Home = () => {
+  const socket = io.connect('http://localhost:4000');
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [userDetail,setUserDetail] = useState({});
@@ -13,12 +14,13 @@ const Home = () => {
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
     }
+    socket.on("online_users", (data) => {
+      console.log(data)
+    });
   }, []);
-
   const joinRoom = () => {
     if (room !== "" && userDetail.nickname !== "") {
-      console.log('test2', room)
-      socket.emit("test","lmao")
+      console.log('test2',room)
       setRoom(room); // set the value of the room state variable
       router.push({
         pathname: `/chat`,
@@ -29,6 +31,11 @@ const Home = () => {
   
   return (
     <div className={styles.container}>
+      <div className={styles.sidebarContainer}>
+      <RoomAndUsersColumn socket={socket} nicknameTitle={userDetail.nickname} usernameTitle ={userDetail.username}/>
+      </div>
+
+
       <div className={styles.formContainer}>
         <h1>{`<>DevRooms</>`}</h1>
         <h2>{userDetail.nickname}</h2>
@@ -36,6 +43,7 @@ const Home = () => {
           className={styles.input}
           onChange={(e) => setRoom(e.target.value)}
         >
+        
           <option>-- Select Room --</option>
           <option value="javascript">JavaScript</option>
           <option value="node">Node</option>
@@ -51,6 +59,8 @@ const Home = () => {
           Join Room
         </button>
       </div>
+
+
     </div>
   );
 };
