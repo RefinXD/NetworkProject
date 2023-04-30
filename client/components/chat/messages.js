@@ -25,18 +25,6 @@ const Messages = ({ socket }) => {
   }, [socket]);
 
   // Add this
-  useEffect(() => {
-    // Last 100 messages sent in the chat room (fetched from the db in backend)
-    socket.on('last_100_messages', (last100Messages) => {
-      console.log('Last 100 messages:', JSON.parse(last100Messages));
-      last100Messages = JSON.parse(last100Messages);
-      // Sort these messages by __createdtime__
-      last100Messages = sortMessagesByDate(last100Messages);
-      setMessagesReceived((state) => [...last100Messages, ...state]);
-    });
-
-    return () => socket.off('last_100_messages');
-  }, [socket]);
 
   // Add this
   // Scroll to the most recent message

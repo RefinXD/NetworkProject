@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useState ,useEffect} from 'react';
 import io from 'socket.io-client';
 
-const socket = io.connect('http://localhost:4000');
 
 const Home = () => {
   const router = useRouter();
@@ -19,14 +18,12 @@ const Home = () => {
   }, []);
 
   const joinRoom = () => {
-    console.log('test')
     if (room !== "" && userDetail.nickname !== "") {
       console.log('test2',room)
-      // setRoom(room); // set the value of the room state variable
-      socket.emit("join_room", { username: userDetail.nickname, room });
+      setRoom(room); // set the value of the room state variable
       router.push({
         pathname: `/chat`,
-        query: { username: userDetail.nickname, room: room },
+        query: { username: userDetail.nickname, room: room},
       });
           }
   };
