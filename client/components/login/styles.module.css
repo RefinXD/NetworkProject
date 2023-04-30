@@ -3,6 +3,7 @@
   padding: 0;
   margin: 0;
   background-color: #E6E3D8 ;
+  text-align: center;
 }
 
 .heading {
@@ -27,6 +28,7 @@
 
 .formGroup {
   margin-bottom: 20px;
+
 }
 
 .formControl {
@@ -42,7 +44,7 @@
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: black;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -51,5 +53,5 @@
 }
 
 .btn:hover {
-  background-color: #0069d9;
+  background-color: #ccc;
 }

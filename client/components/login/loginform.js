@@ -113,7 +113,7 @@ function Login() {
           />
         </div>
         <div className={styles.formGroup}>
-          <button className= {styles.button} >Submit</button>
+          <button className= {styles.btn} >Submit</button>
         </div>
         <div style={{ alignSelf: 'center', fontSize: '0.8rem', marginTop: '0.5rem' }}>
           <label style={{ color: 'gray' }}>Don&apos;t have an account? </label>
