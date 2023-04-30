@@ -50,7 +50,7 @@ const AuthController = {
         sameSite: "strict", // Prevent cross-site request forgery (CSRF) attacks
       });
     }
-    console.log("login result", result);
+    // console.log("login result", result);
     res.json(result);
   },
 

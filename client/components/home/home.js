@@ -13,8 +13,10 @@ const Home = () => {
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
     }
+    socket.on("online_users", (data) => {
+      console.log(data)
+    });
   }, []);
-
   const joinRoom = () => {
     if (room !== "" && userDetail.nickname !== "") {
       console.log('test2', room)
