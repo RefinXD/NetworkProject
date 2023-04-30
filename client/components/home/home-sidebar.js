@@ -6,18 +6,18 @@ import Swal from "sweetalert2";
 
 const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   const [roomUsers, setRoomUsers] = useState([]);
-  // console.log("roomAnduser",username,"  ",room,"    ",socket);
+  //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
   const router = useRouter();
 
-  
   useEffect(() => {
     socket.on("online_users", (data) => {
       console.log(data);
       setRoomUsers(data);
     });
     return () => socket.off("online_users");
-  }, [socket]);
-  console.log(roomUsers)
+  }, []);
+
+  console.log(roomUsers);
   // const leaveRoom = () => {
   //   const __createdtime__ = Date.now();
   //   socket.emit('leave_room', { username, room, __createdtime__ });
@@ -41,21 +41,16 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   };
   return (
     <div className={styles.roomAndUsersColumn}>
+      <h1 className={styles.usernameTitle}>{usernameTitle}</h1>
+      <h2 className={styles.nicknameTitle}>{nicknameTitle}</h2>
 
-<h1 className={styles.usernameTitle}>{usernameTitle}</h1>
-<h2 className={styles.nicknameTitle}>{nicknameTitle}</h2>
+      <ul className={styles.ListofOnlineUser}>
+        {roomUsers.map((user) => (
+          <li key={user._id}>{user.nickname}</li>
+        ))}
+      </ul>
 
-     
-        <ul className={styles.ListofOnlineUser}>
-          {roomUsers.map((user) => (
-            <li key={user._id}>
-              {user.nickname}
-            </li>
-          ))}
-        </ul>
-      
-
-      <button className='btn btn-outline' onClick={handleLogout}>
+      <button className="btn btn-outline" onClick={handleLogout}>
         logout
       </button>
     </div>
