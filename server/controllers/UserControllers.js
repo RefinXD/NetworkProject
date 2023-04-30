@@ -59,6 +59,29 @@ const UserController = {
     res.json(result);
   },
 
+
+  /**
+   * getAllOnlineUsers
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getAllOnlineUsers(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const users = await User.find({status:"Online"});
+      return {
+        code: 200,
+        data: users,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
+
+
+
+
+
   /**
    * updateUserById
    * @param {import('express').Request} req

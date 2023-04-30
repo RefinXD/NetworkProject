@@ -1,9 +1,11 @@
 import styles from './styles.module.css';
 import { useState, useEffect, useRef } from 'react';
+import socket from '../../utils/Utils';
+
+
 
 const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
-
   const messagesColumnRef = useRef(null); // Add this
   console.log("testtest01")
   // Runs whenever a socket event is recieved from the server

@@ -90,10 +90,15 @@ const io = new Server(server, {
 
 // Add this
 // Listen for when the client connects via socket.io-client
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log(`User connected ${socket.id}`);
   // console.log("after join room")
+  onlineUsers = await User.find({status:"Online"},).select({nickname:1});
+  socket.emit("online_users",onlineUsers)
   // We can write our socket event listeners in here...
+  socket.on("test", (data) => {
+    console.log(data);
+  })
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
     const { username, room } = data; // Data sent from client when join_room event emitted
@@ -114,6 +119,8 @@ io.on("connection", (socket) => {
   });
   socket.on("send_message", (data) => {
     const { message, username, room, __createdtime__ } = data;
+    console.log(message)
+    console.log(username)
     io.in(room).emit("receive_message", data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))

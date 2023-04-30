@@ -2,11 +2,10 @@ import styles from './styles.module.css';
 import RoomAndUsersColumn from './room-and-users'; // Add this
 import SendMessage from './send-message';
 import MessagesReceived from './messages';
-import io from 'socket.io-client'; // Add this
+import socket from '../../utils/Utils'; // Add this
 
 
-const Chat = ({ nickname, room}) => {
-  const socket = io.connect('http://localhost:4000'); // Add this -- our server will run on port 4000, so we connect to it from here
+const Chat = ({ nickname, room}) => { // Add this -- our server will run on port 4000, so we connect to it from here
   socket.emit("join_room", { username:nickname, room });
   console.log("Chat page    ",nickname,"    ",room )
   return (
