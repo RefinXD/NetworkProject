@@ -2,6 +2,7 @@ import styles from "./styles.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   const [roomUsers, setRoomUsers] = useState([]);
@@ -22,7 +23,22 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   //   socket.emit('leave_room', { username, room, __createdtime__ });
   //   router.push('/')
   // };
-
+  const handleLogout = async () => {
+    const swal = await Swal.fire({
+      title: "",
+      text: "Are you sure you want to log out ?",
+      icon: "warning",
+      showCancelButton: true,
+      focusCancel: true,
+      cancelButtonText: "Cancel",
+      confirmButtonText: "Yes",
+    });
+    if (swal.isConfirmed) {
+      await router.push("/login");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("token_expires");
+    }
+  };
   return (
     <div className={styles.roomAndUsersColumn}>
 
@@ -39,9 +55,9 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
         </ul>
       
 
-      {/* <button className='btn btn-outline' onClick={leaveRoom}>
-        Leave
-      </button> */}
+      <button className='btn btn-outline' onClick={handleLogout}>
+        logout
+      </button>
     </div>
   );
 };
