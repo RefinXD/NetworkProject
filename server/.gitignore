@@ -82,7 +82,7 @@ jspm_packages/
 .env
 
 # next.js build output
-.next
+/client/.next
 
 # Lerna
 lerna-debug.log
@@ -92,3 +92,7 @@ lerna-debug.log
 Thumbs.db
 
 db/mongo-volume
+
+
+/.node_repl_history
+/.next
