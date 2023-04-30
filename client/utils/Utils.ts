@@ -11,3 +11,9 @@ export const addHoursToDate = (d: Date, h: number) => {
     d.setTime(d.getTime() + (h*60*60*1000));
     return d
 } 
+
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:4000')
+
+export default socket;
