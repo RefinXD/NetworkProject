@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { FaSignInAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../../services/userService";
 import { useRouter } from "next/router";
-
+import { Link, Router } from "react-router-dom";
+import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -29,7 +29,15 @@ function Login() {
       [e.target.name]: e.target.value,
     }));
   };
+  const handleRegister = async(e) =>{
+    e.preventDefault();
+    router.push('/register')
+  }
 
+  const handleLogin = async(e) =>{
+    e.preventDefault();
+    router.push('/login')
+  }
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -53,6 +61,21 @@ function Login() {
 
   return (
     <>
+    <header className="header">
+      <div className="projectName">
+        {/* <Link to="/">Chit Chat</Link> */}
+      </div>
+      <ul>
+        <li onClick={handleLogin}>  
+            <FaSignInAlt />
+            Login
+        </li>
+        <li onClick={handleRegister}>
+            <FaUser />
+            Register
+        </li>
+      </ul>
+    </header>
       <section className="heading">
         <h1>
           <FaSignInAlt /> Login
@@ -88,6 +111,14 @@ function Login() {
           <div className="form-group">
             <button className="btn btn-block">Submit</button>
           </div>
+          <div
+           style={{ alignSelf: "center", fontSize: "0.8rem", marginTop: "0.5rem" }}
+      >   
+        <label style={{ color: "gray" }}>Don&apos;t have an account? </label>
+        <div>
+
+        </div>
+      </div>
         </form>
       </section>
     </>
