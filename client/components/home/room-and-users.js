@@ -8,15 +8,15 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   // console.log("roomAnduser",username,"  ",room,"    ",socket);
   const router = useRouter();
 
+  
   useEffect(() => {
     socket.on("online_users", (data) => {
       console.log(data);
       setRoomUsers(data);
     });
-
     return () => socket.off("online_users");
   }, [socket]);
-
+  console.log(roomUsers)
   // const leaveRoom = () => {
   //   const __createdtime__ = Date.now();
   //   socket.emit('leave_room', { username, room, __createdtime__ });
@@ -29,21 +29,15 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
 <h1 className={styles.usernameTitle}>{usernameTitle}</h1>
 <h2 className={styles.nicknameTitle}>{nicknameTitle}</h2>
 
-      <div>
-        {roomUsers.length > 0 && <h5 className={styles.ListofOnlineUser}>Users:</h5>}
-        <ul className={styles.usersList}>
+     
+        <ul className={styles.ListofOnlineUser}>
           {roomUsers.map((user) => (
-            <li
-              style={{
-                fontWeight: `${user.username === username ? "bold" : "normal"}`,
-              }}
-              key={user.id}
-            >
-              {user.username}
+            <li key={user._id}>
+              {user.nickname}
             </li>
           ))}
         </ul>
-      </div>
+      
 
       {/* <button className='btn btn-outline' onClick={leaveRoom}>
         Leave

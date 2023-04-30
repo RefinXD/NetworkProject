@@ -1,9 +1,10 @@
 import styles from "./styles.module.css";
 import { useRouter } from 'next/router'
 import { useState ,useEffect} from 'react';
+import RoomAndUsersColumn from './room-and-users'; // Add this
 import socket from '../../utils/Utils';
 const Home = () => {
-  const socket = io.connect('http://localhost:4000');
+
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [userDetail,setUserDetail] = useState({});
@@ -14,13 +15,12 @@ const Home = () => {
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
     }
-    socket.on("online_users", (data) => {
-      console.log(data)
-    });
   }, []);
+
   const joinRoom = () => {
     if (room !== "" && userDetail.nickname !== "") {
       console.log('test2',room)
+
       setRoom(room); // set the value of the room state variable
       router.push({
         pathname: `/chat`,
