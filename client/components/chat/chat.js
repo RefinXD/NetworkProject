@@ -11,7 +11,7 @@ const Chat = ({ nickname, room}) => {
   console.log("Chat page    ",nickname,"    ",room )
   return (
     <div className={styles.chatContainer} style={{backgroundColor: '#E6E3D8'}}  >
-      {/* Add this */}
+      
       <RoomAndUsersColumn socket={socket} username={nickname} room={room} />
 
       <div>
