@@ -159,7 +159,7 @@ export const addFriendByFriendId = async (userid: string, friendid: string) => {
         }
       : {};
   const axios_res = await axios.put(
-    `${appConfig.BACKEND_URL}/api/user/${userid}`,
+    `${appConfig.BACKEND_URL}/api/user/friends/${userid}`,
     { friendid },
     configs
   );
