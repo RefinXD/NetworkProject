@@ -5,15 +5,19 @@ import RoomAndUsersColumn from "./home-sidebar"; // Add this
 import socket from "../../utils/Utils";
 import RoomComponent from "./room-component";
 import Room from "./room";
+import NavBar from "../layout/navBar";
+
 const Home = () => {
   const router = useRouter();
   const [userDetail, setUserDetail] = useState({});
   const [rooms, setRooms] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState();
 
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
+      setIsLoggedIn(true);
     }
   }, []);
 
@@ -34,8 +38,9 @@ const Home = () => {
       return [...prevRooms, newRoom];
     });
   }
-
   return (
+    <>
+    <NavBar isLoggedIn={isLoggedIn}/>
     <div className={styles.container}>
       <div className={styles.sidebarContainer}>
         <RoomAndUsersColumn
@@ -64,6 +69,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

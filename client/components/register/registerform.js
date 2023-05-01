@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { createUser } from "../../services/userService";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
-
+import NavBar from "../layout/navBar";
 export default function Register() {
   const [formData, setFormData] = useState({
     nickname: "",
@@ -79,7 +79,8 @@ export default function Register() {
   return (
     <>
       <div className= {styles.registerContainer}>
-      <div
+      {/* <NavBar isLoggedIn={false}/> */}
+            <div
           className="header"
           style={{
             display: "flex",
