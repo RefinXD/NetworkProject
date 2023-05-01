@@ -4,4 +4,5 @@ export interface UserInterface {
   username: string;
   password: string;
   status:string;
+  friends: string[];
 }
