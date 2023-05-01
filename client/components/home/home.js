@@ -18,6 +18,8 @@ const Home = () => {
     }
   }, []);
 
+
+
   function joinRoom(title) {
     console.log("listroom", title);
     if (title !== "" && userDetail.nickname !== "") {
