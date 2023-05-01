@@ -18,6 +18,8 @@ const Home = () => {
 
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
+    socket.connect();
+    socket.emit("updateUsernames",userDetail)
     socket.on("available_rooms", (data) => {
       
       let roomList = [];
