@@ -83,7 +83,7 @@ let onlineUsers = []
 // Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000","http://192.168.1.41:3000","http://192.168.1.33:3000"],
     methods: ["GET", "POST"],
   },
 });
@@ -141,14 +141,16 @@ io.on("connection", async (socket) => {
     console.log(`${username} has left the chat`);
   });
 
-  socket.on("disconnect", () => {
+  socket.on("disconnect",async () => {
     console.log("User disconnected from the chat");
     const user = allUsers.find((user) => user.id == socket.id);
     console.log("user",user)
+    console.log(user?.username)
     if (user?.username) {
       allUsers = leaveRoom(socket.id, allUsers);
       socket.to(chatRoom).emit("chatroom_users", allUsers);
-      const offlineUser = User.findOneAndUpdate({username:user.username},{status:"Offline"});
+      const offlineUser = await User.findOneAndUpdate({nickname:user.username},{status:"Offline"});
+      console.log(offlineUser);
       socket.to(chatRoom).emit("receive_message", {
         message: `${user.username} has disconnected from the chat.`,
       });

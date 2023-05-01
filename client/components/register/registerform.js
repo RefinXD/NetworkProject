@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { createUser } from "../../services/userService";
-import "./styles.module.css";
+import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 
 export default function Register() {
@@ -28,7 +28,7 @@ export default function Register() {
 
     if (isSuccess) {
       toast.success("Registration successful");
-      router.push("./home");
+      router.push("./login");
     }
   }, [isError, isSuccess]);
 
@@ -57,7 +57,7 @@ export default function Register() {
         username,
         password,
       };
-      console.log("before function");
+      // console.log("before function");
       const response = await createUser(userData);
       console.log("create user", response);
       setIsSuccess(true);
@@ -78,8 +78,8 @@ export default function Register() {
   }
   return (
     <>
-      <div className="registerContainer">
-        <div
+      <div className= {styles.registerContainer}>
+      <div
           className="header"
           style={{
             display: "flex",
@@ -110,7 +110,7 @@ export default function Register() {
                 cursor: "pointer",
               }}
             >
-              <FaSignInAlt/>
+              <FaSignInAlt />
               <span style={{ marginLeft: "5px" }}>Login</span>
             </li>
             <li onClick={handleRegister} style={{ cursor: "pointer" }}>
@@ -119,6 +119,7 @@ export default function Register() {
             </li>
           </ul>
         </div>
+
         <div className="heading" style={{ textAlign: 'center', marginTop: '50px' }}>
               <h1>
                     <FaUser /> Register
@@ -126,12 +127,12 @@ export default function Register() {
 
                 <p>Please create an account</p>
           </div>
-        <section className="form">
+        <section className={styles.form}>
           <form onSubmit={onSubmit}>
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <input
                 type="text"
-                className="form-control"
+                className={styles.formControl}
                 id="nickname"
                 name="nickname"
                 value={nickname}
@@ -141,10 +142,10 @@ export default function Register() {
               />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <input
                 type="text"
-                className="form-control"
+                className={styles.formControl}
                 id="username"
                 name="username"
                 value={username}
@@ -154,10 +155,10 @@ export default function Register() {
               />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <input
                 type="password"
-                className="form-control"
+                className={styles.formControl}
                 id="password"
                 name="password"
                 value={password}
@@ -167,10 +168,10 @@ export default function Register() {
               />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
               <input
                 type="password"
-                className="form-control"
+                className={styles.formControl}
                 id="password2"
                 name="password2"
                 value={password2}
@@ -180,8 +181,8 @@ export default function Register() {
               />
             </div>
 
-            <div className="form-group">
-              <button type="submit" className="btn btn-block">
+            <div className={styles.formGroup}>
+              <button type="submit" className= {styles.btnBlock}>
                 Submit
               </button>
             </div>
