@@ -33,7 +33,7 @@ const Home = () => {
       });
     }
   }
-  function addRoom(newRoom) {
+  async function addRoom(newRoom) {
     console.log("newroom", newRoom.title);
     await createRoom({roomname: newRoom.title});
     setRooms((prevRooms) => {
