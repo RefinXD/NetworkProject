@@ -59,7 +59,6 @@ const UserController = {
     res.json(result);
   },
 
-
   /**
    * getAllOnlineUsers
    * @param {import('express').Request} req
@@ -68,7 +67,7 @@ const UserController = {
    */
   async getAllOnlineUsers(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
-      const users = await User.find({status:"Online"});
+      const users = await User.find({ status: "Online" });
       return {
         code: 200,
         data: users,
@@ -77,10 +76,6 @@ const UserController = {
     });
     res.json(result);
   },
-
-
-
-
 
   /**
    * updateUserById
@@ -177,6 +172,57 @@ const UserController = {
         code: 200,
         data: user,
         message: "user deleted",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * addFriendById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async addFriendById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const userId = req.params.id;
+      const friendId = req.body.friendId;
+      const friend = await User.findById(friendId);
+      const user = await User.findById(userId);
+      console.log(userId);
+      if (!friend) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      if (user.friends.includes(friendId)) {
+        return res
+          .status(200)
+          .json({ message: "User already added as friend" });
+      }
+      user.friends.push(friendId);
+      await user.save();
+      return {
+        code: 200,
+        data: user,
+        message: "friend added",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * getFriendById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getFriendById(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+      return {
+        code: 200,
+        data: user.friends,
+        message: "",
       };
     });
     res.json(result);

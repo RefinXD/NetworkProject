@@ -148,3 +148,52 @@ export const userLogin = async (username: string, password: string) => {
   }
   return res;
 };
+
+export const addFriendUserById = async (userid: string, friendid: string) => {
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  const axios_res = await axios.put(
+    `${appConfig.BACKEND_URL}/api/user/${userid}`,
+    { friendid },
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+  return res;
+};
+
+export const getFriendsById = async (id: string) => {
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  const axios_res = await axios.get(
+    `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+  return res;
+};

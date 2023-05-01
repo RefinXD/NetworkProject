@@ -127,6 +127,7 @@ const RoomController = {
     });
     res.json(result);
   },
+
 };
 
 module.exports = RoomController;

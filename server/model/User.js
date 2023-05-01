@@ -14,15 +14,18 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, "Please add a password"],
-    minlength : 6
+    minlength: 6,
   },
-  status:{
+  status: {
     type: String,
-    enum: ['Online','Offline'],
+    enum: ["Online", "Offline"],
     required: [true, "Please add a password"],
-    default: 'Offline'
-  }
-  
+    default: "Offline",
+  },
+  friends: {
+    type: [mongoose.Schema.Types.ObjectId],
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
