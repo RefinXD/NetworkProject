@@ -10,14 +10,15 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   const router = useRouter();
 
   useEffect(() => {
+    socket.emit("test",roomUsers)
     socket.on("online_users", (data) => {
-      console.log(data);
+      console.log("asd",data);
       setRoomUsers(data);
     });
     return () => socket.off("online_users");
   }, []);
 
-  console.log(roomUsers);
+  //console.log("roomuser",roomUsers);
   // const leaveRoom = () => {
   //   const __createdtime__ = Date.now();
   //   socket.emit('leave_room', { username, room, __createdtime__ });

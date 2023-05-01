@@ -7,6 +7,9 @@ import RoomComponent from "./room-component";
 import Room from "./room";
 import NavBar from "../layout/navBar";
 
+import {createRoom} from "../../services/roomService";
+
+
 const Home = () => {
   const router = useRouter();
   const [userDetail, setUserDetail] = useState({});
@@ -21,6 +24,8 @@ const Home = () => {
     }
   }, []);
 
+
+
   function joinRoom(title) {
     console.log("listroom", title);
     if (title !== "" && userDetail.nickname !== "") {
@@ -32,8 +37,9 @@ const Home = () => {
       });
     }
   }
-  function addRoom(newRoom) {
-    console.log("newroom", newRoom);
+  async function addRoom(newRoom) {
+    console.log("newroom", newRoom.title);
+    await createRoom({roomname: newRoom.title});
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });
