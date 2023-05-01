@@ -13,7 +13,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
     socket.emit("test",roomUsers)
     
     socket.on("online_users", (data) => {
-      console.log("asd",data);
+     
       setRoomUsers(data);
     });
     return () => socket.off("online_users");

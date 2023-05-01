@@ -15,12 +15,23 @@ const Home = () => {
 
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
+    socket.on("available_rooms", (data) => {
+      
+      let roomList = [];
+     
+      data.forEach(element => {
+        roomList.push( {title:element.roomname})
+      });
+      setRooms(roomList)
+      
+    });
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
     }
+    
   }, []);
 
-
+  
 
   function joinRoom(title) {
     console.log("listroom", title);
@@ -39,6 +50,7 @@ const Home = () => {
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });
+    socket.emit("test",rooms)
   }
 
   return (

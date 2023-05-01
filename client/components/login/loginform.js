@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 import { Link, Router } from "react-router-dom";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import styles from "./styles.module.css";
-import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+
+
 function Login() {
   const [formData, setFormData] = useState({
     username: "",
@@ -61,7 +61,7 @@ function Login() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
+    
         <div className={styles.LoginContainer}>
           <div
             className="header"
@@ -162,7 +162,7 @@ function Login() {
             </form>
           </div>
         </div>
-      </QueryClientProvider>
+     
     </>
   );
 }

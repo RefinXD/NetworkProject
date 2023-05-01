@@ -74,6 +74,7 @@ module.exports = app;
 http = require("http");
 const server = http.createServer(app); // Add this
 const { Server } = require("socket.io"); // Add this
+const Room = require("./model/Room");
 
 const CHAT_BOT = "ChatBot"; // Add this
 let chatRoom = ""; // E.g. javascript, node,...
@@ -94,10 +95,14 @@ io.on("connection", async (socket) => {
   console.log(`User connected ${socket.id}`);
   // console.log("after join room")
   const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
+  const allRooms = await Room.find()
   socket.emit("online_users", onlineUsers);
+  socket.emit("available_rooms",allRooms );
+  
   // We can write our socket event listeners in here...
   socket.on("test", (data) => {
     socket.emit("online_users", onlineUsers);
+    socket.emit("available_rooms", allRooms);
   })
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
