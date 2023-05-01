@@ -8,5 +8,6 @@ router.delete("/room", authUser, roomController.deleteAllRooms);
 router.delete("/room/:roomId", authUser, roomController.deleteRoomById);
 router.get("/room", authUser, roomController.getAllRooms);
 router.get("/room/:roomId", authUser, roomController.getRoomById);
+router.get("/search", authUser, roomController.getAllRoomsWithName);
 router.put("/room/:roomId", authUser, roomController.updateRoomById);
 module.exports = router;
