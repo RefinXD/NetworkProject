@@ -94,7 +94,7 @@ io.on("connection", async (socket) => {
   console.log(`User connected ${socket.id}`);
   // console.log("after join room")
   const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
-
+  socket.emit("online_users", onlineUsers);
   // We can write our socket event listeners in here...
   socket.on("test", (data) => {
     socket.emit("online_users", onlineUsers);
