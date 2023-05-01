@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['Online','Offline'],
     required: [true, "Please add a password"],
-    default: 'Online'
+    default: 'Offline'
   }
   
 });
