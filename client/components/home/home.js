@@ -6,6 +6,8 @@ import socket from "../../utils/Utils";
 import RoomComponent from "./room-component";
 import Room from "./room";
 import {createRoom} from "../../services/roomService";
+
+
 const Home = () => {
   const router = useRouter();
   const [userDetail, setUserDetail] = useState({});
@@ -17,6 +19,8 @@ const Home = () => {
       setUserDetail(JSON.parse(userDetail));
     }
   }, []);
+
+
 
   function joinRoom(title) {
     console.log("listroom", title);
@@ -31,7 +35,7 @@ const Home = () => {
   }
   function addRoom(newRoom) {
     console.log("newroom", newRoom.title);
-    //await createRoom(newRoom.title);
+    await createRoom({roomname: newRoom.title});
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });

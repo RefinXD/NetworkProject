@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 export const isHttpStatusOk = (code: number) => {
     return Math.floor(code / 100) == 2
 }
@@ -12,7 +14,6 @@ export const addHoursToDate = (d: Date, h: number) => {
     return d
 } 
 
-import io from 'socket.io-client';
 
 const socket = io('http://localhost:4000')
 
