@@ -6,10 +6,12 @@ function Room(props) {
   }
 
   return (
-    <div className={styles.room}>
-      <span>{props.title}</span>
-      <button onClick={handleClick}>JOIN</button>
-    </div>
+    
+    <div >
+      <span className={styles.roomName}>{props.title}</span>
+      
+      <button className={styles.joinButton} onClick={handleClick}>JOIN</button>
+      </div>
   );
 }
 

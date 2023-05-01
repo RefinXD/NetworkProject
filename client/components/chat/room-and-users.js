@@ -46,7 +46,7 @@ const RoomAndUsers = ({ socket, username, room }) => {
         </ul>
       </div>
 
-      <button className='btn btn-outline' onClick={leaveRoom}>
+      <button className={styles.leaveButton} onClick={leaveRoom}>
         Leave
       </button>
     </div>

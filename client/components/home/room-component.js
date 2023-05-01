@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import styles from "./styles.module.css";
 function RoomComponent(props) {
   const [room, setRoom] = useState({
     title: ""
@@ -27,12 +27,13 @@ function RoomComponent(props) {
     <div>
       <form>
         <input
+          className={styles.messageInput}
           name="title"
           onChange={onChange}
           value={room.title}
           placeholder="Title"
         />
-        <button onClick={submitRoom}>Add</button>
+        <button className={styles.addButton} onClick={submitRoom}>Add</button>
       </form>
     </div>
   );

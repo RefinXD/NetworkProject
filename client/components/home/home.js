@@ -29,9 +29,9 @@ const Home = () => {
       });
     }
   }
-  async function addRoom(newRoom) {
+  function addRoom(newRoom) {
     console.log("newroom", newRoom.title);
-    await createRoom(newRoom.title);
+    //await createRoom(newRoom.title);
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });
@@ -48,8 +48,8 @@ const Home = () => {
       </div>
 
       <div className={styles.formContainer}>
-        <h1>{`<>DevRooms</>`}</h1>
-        <h2>{userDetail.nickname}</h2>
+        <h1>{`ChitChat`}</h1>
+        <h2>HELLO !! {userDetail.nickname}</h2>
 
         <div>
           <RoomComponent onAdd={addRoom} />

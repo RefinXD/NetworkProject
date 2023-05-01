@@ -11,6 +11,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
 
   useEffect(() => {
     socket.emit("test",roomUsers)
+    
     socket.on("online_users", (data) => {
       console.log("asd",data);
       setRoomUsers(data);
