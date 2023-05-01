@@ -79,7 +79,9 @@ const Room = require("./model/Room");
 const CHAT_BOT = "ChatBot"; // Add this
 let chatRoom = ""; // E.g. javascript, node,...
 let allUsers = []; // All users in current chat room
-let onlineUsers = [];
+let connectedUsers = [];
+let usernameMapping = new Map()
+let idMapping = new Map()
 // Add this
 // Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
 const io = new Server(server, {
@@ -88,45 +90,49 @@ const io = new Server(server, {
       "http://localhost:3000",
       "http://192.168.1.41:3000",
       "http://192.168.1.33:3000",
+      "http://172.20.10.4:3000"
     ],
     methods: ["GET", "POST"],
   },
 });
 
-io.use(async (socket, next) => {
-  const sessionID = socket.handshake.auth.sessionID;
-  if (sessionID) {
-    const session = await sessionStore.findSession(sessionID);
-    if (session) {
-      socket.sessionID = sessionID;
-      socket.userID = session.userID;
-      socket.username = session.username;
-      return next();
-    }
-  }
-  const username = socket.handshake.auth.username;
-  if (!username) {
-    return next(new Error("invalid username"));
-  }
-  socket.sessionID = randomId();
-  socket.userID = randomId();
-  socket.username = username;
-  next();
-});
 
 // Add this
 // Listen for when the client connects via socket.io-client
 io.on("connection", async (socket) => {
   console.log(`User connected ${socket.id}`);
+  
+  // console.log(socket)
+  // console.log(io.sockets['sockets']);
   // console.log("after join room")
-  const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
+  socket.on("updateUsernames", (data)=>{
+    console.log(data)
+    const obj = JSON.parse(data)
+    const name = obj.nickname;
+    if (connectedUsers.indexOf(name) == -1){
+      connectedUsers.push(name)
+      console.log(connectedUsers)
+      usernameMapping.set(name,socket.id)
+      idMapping.set(socket.id,name)
+    }
+    else{
+      console.log("no update")
+    }
+    let onlineObj = []
+    connectedUsers.forEach(element => {
+    newObj = {_id:socket.id,nickname:element}
+    onlineObj.push(newObj)
+   })
+    socket.emit("online_users", onlineObj);
+  })
+  // const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
+  // console.log(onlineUsers)
   const allRooms = await Room.find()
-  socket.emit("online_users", onlineUsers);
   socket.emit("available_rooms",allRooms );
   
   // We can write our socket event listeners in here...
-  socket.on("test", (data) => {
-    socket.emit("online_users", onlineUsers);
+  socket.on("test",async  (data) => {
+    const allRooms = await Room.find()
     socket.emit("available_rooms", allRooms);
   })
   socket.on("join_room", (data) => {
@@ -170,7 +176,21 @@ io.on("connection", async (socket) => {
     });
     console.log(`${username} has left the chat`);
   });
-
+  socket.on("logout", () => {
+    console.log("logout")
+    const targetUser = idMapping.get(socket.id)
+    const targetIdx = connectedUsers.indexOf(targetUser)
+    connectedUsers.splice(targetIdx);
+    idMapping.delete(socket.id);
+    usernameMapping.delete(targetUser);
+    let onlineObj = []
+    connectedUsers.forEach(element => {
+    newObj = {_id:socket.id,nickname:element}
+    onlineObj.push(newObj)
+   })
+    socket.emit("online_users", onlineObj);
+    socket.disconnect();
+  })
   socket.on("disconnect", async () => {
     console.log("User disconnected from the chat");
     const user = allUsers.find((user) => user.id == socket.id);
@@ -188,82 +208,9 @@ io.on("connection", async (socket) => {
         message: `${user.username} has disconnected from the chat.`,
       });
     }
+    socket.disconnect();
   });
 
-  // persist session
-  sessionStore.saveSession(socket.sessionID, {
-    userID: socket.userID,
-    username: socket.username,
-    connected: true,
-  });
-
-  // emit session details
-  socket.emit("session", {
-    sessionID: socket.sessionID,
-    userID: socket.userID,
-  });
-
-  // join the "userID" room
-  socket.join(socket.userID);
-
-  // fetch existing users
-  const users = [];
-
-  const messagesPerUser = new Map();
-  messages.forEach((message) => {
-    const { from, to } = message;
-    const otherUser = socket.userID === from ? to : from;
-    if (messagesPerUser.has(otherUser)) {
-      messagesPerUser.get(otherUser).push(message);
-    } else {
-      messagesPerUser.set(otherUser, [message]);
-    }
-  });
-
-  sessions.forEach((session) => {
-    users.push({
-      userID: session.userID,
-      username: session.username,
-      connected: session.connected,
-      messages: messagesPerUser.get(session.userID) || [],
-    });
-  });
-  socket.emit("users", users);
-
-  // notify existing users
-  socket.broadcast.emit("user connected", {
-    userID: socket.userID,
-    username: socket.username,
-    connected: true,
-    messages: [],
-  });
-
-  // forward the private message to the right recipient (and to other tabs of the sender)
-  socket.on("private message", ({ content, to }) => {
-    const message = {
-      content,
-      from: socket.userID,
-      to,
-    };
-    socket.to(to).to(socket.userID).emit("private message", message);
-    // messageStore.saveMessage(message);
-  });
-
-  // notify users upon disconnection
-  socket.on("disconnect", async () => {
-    const matchingSockets = await io.in(socket.userID).allSockets();
-    const isDisconnected = matchingSockets.size === 0;
-    if (isDisconnected) {
-      // notify other users
-      socket.broadcast.emit("user disconnected", socket.userID);
-      // update the connection status of the session
-      // sessionStore.saveSession(socket.sessionID, {
-      //   userID: socket.userID,
-      //   username: socket.username,
-      //   connected: false,
-      // });
-    }
-  });
 });
 
 server.listen(4000, () => "Server is running on port 3000");
