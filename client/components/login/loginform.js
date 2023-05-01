@@ -25,17 +25,7 @@ function Login() {
   //   }
   // });
 
-  const onUsernameSelection = (username) => {
-    this.usernameAlreadySelected = true;
-    socket.auth = { username };
-    socket.connect();
-  }
 
-  socket.on("connect_error", (err) => {
-    if (err.message === "invalid username") {
-      this.usernameAlreadySelected = false;
-    }
-  });
 
   const onChange = (e) => {
     setFormData((prevState) => ({
