@@ -149,7 +149,7 @@ export const userLogin = async (username: string, password: string) => {
   return res;
 };
 
-export const addFriendUserById = async (userid: string, friendid: string) => {
+export const addFriendByFriendId = async (userid: string, friendid: string) => {
   const configs =
     localStorage.getItem("accessToken") != undefined
       ? {
