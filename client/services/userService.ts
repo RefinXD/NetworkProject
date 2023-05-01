@@ -58,6 +58,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const createUser = async (data: UserInterface) => {
+  console.log(data)
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/user`, data);
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))

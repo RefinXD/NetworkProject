@@ -64,7 +64,9 @@ export const createRoom = async (data: RoomInterface) => {
           },
         }
       : {};
+  console.log(data)
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/room`, data, configs);
+  console.log(axios_res)
   const res = axios_res.data as ApiResponseInterface<RoomInterface>;
   // console.log("res", res)
   if (!isHttpStatusOk(res.code))
