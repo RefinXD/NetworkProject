@@ -5,6 +5,7 @@ import RoomAndUsersColumn from "./home-sidebar"; // Add this
 import socket from "../../utils/Utils";
 import RoomComponent from "./room-component";
 import Room from "./room";
+import {createRoom} from "../../services/roomService";
 const Home = () => {
   const router = useRouter();
   const [userDetail, setUserDetail] = useState({});
@@ -28,8 +29,9 @@ const Home = () => {
       });
     }
   }
-  function addRoom(newRoom) {
-    console.log("newroom", newRoom);
+  async function addRoom(newRoom) {
+    console.log("newroom", newRoom.title);
+    await createRoom(newRoom.title);
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });

@@ -78,7 +78,7 @@ const { Server } = require("socket.io"); // Add this
 const CHAT_BOT = "ChatBot"; // Add this
 let chatRoom = ""; // E.g. javascript, node,...
 let allUsers = []; // All users in current chat room
-
+let onlineUsers = []
 // Add this
 // Create an io server and allow for CORS from http://localhost:3000 with GET and POST methods
 const io = new Server(server, {
@@ -93,11 +93,11 @@ const io = new Server(server, {
 io.on("connection", async (socket) => {
   console.log(`User connected ${socket.id}`);
   // console.log("after join room")
-  onlineUsers = await User.find({status:"Online"},).select({nickname:1});
-  socket.emit("online_users",onlineUsers)
+  const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
+
   // We can write our socket event listeners in here...
   socket.on("test", (data) => {
-    console.log(data);
+    socket.emit("online_users", onlineUsers);
   })
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
