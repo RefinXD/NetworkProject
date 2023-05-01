@@ -6,8 +6,8 @@ import { useRouter } from "next/router";
 import { Link, Router } from "react-router-dom";
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import styles from "./styles.module.css";
-
-
+import NavBar from "../layout/navBar";import { QueryClient, QueryClientProvider } from "react-query";
+const queryClient = new QueryClient();
 function Login() {
   const [formData, setFormData] = useState({
     username: "",
@@ -25,6 +25,18 @@ function Login() {
   //   }
   // });
 
+  const onUsernameSelection = (username) => {
+    this.usernameAlreadySelected = true;
+    socket.auth = { username };
+    socket.connect();
+  }
+
+  socket.on("connect_error", (err) => {
+    if (err.message === "invalid username") {
+      this.usernameAlreadySelected = false;
+    }
+  });
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -36,20 +48,21 @@ function Login() {
     router.push("/register");
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = async(e) =>{
     e.preventDefault();
-    router.push("/login");
-  };
+    router.push('/login')
+  }
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await userLogin(username, password);
+      const response = await userLogin(username,password);
       console.log(response.data);
-
+  
       localStorage.setItem("user", JSON.stringify(response.data));
 
       console.log(localStorage.getItem("user"));
-      router.push("/home");
+      router.push('/home')
+
     } catch (error) {
       console.log(error);
       window.alert(error);
@@ -168,3 +181,4 @@ function Login() {
 }
 
 export default Login;
+
