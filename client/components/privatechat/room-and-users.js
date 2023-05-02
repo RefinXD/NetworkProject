@@ -19,12 +19,12 @@ const RoomAndUsers = ({ socket, username, room }) => {
   }, [socket]);
 
   return (
-    <div className={styles.roomAndUsersColumn}>
-      <h2 className={styles.roomTitle}>{room}</h2>
-
+    // <div className={styles.roomAndUsersColumn}>
+    <div>
+      <h2>{room}</h2>
       <div>
-        {roomUsers.length > 0 && <h5 className={styles.usersTitle}>Users:</h5>}
-        <ul className={styles.usersList}>
+        {roomUsers.length > 0 && <h5>Users:</h5>}
+        {/* <ul className={styles.usersList}>
           {roomUsers.map((user) => (
             <li
               style={{
@@ -35,7 +35,7 @@ const RoomAndUsers = ({ socket, username, room }) => {
               {user.username}
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
 
     </div>
