@@ -13,12 +13,13 @@ const PrivateChat = ({ nickname, room }) => {
   const {target, setTarget} = useContext(AppContext)
   return (
     <div
-      className={styles.chatContainer}
+      // className={styles.chatContainer}
       style={{ backgroundColor: "#E6E3D8" }}
     >
-      <RoomAndUsersColumn socket={socket} username={nickname} room={target} />
+      {/* <RoomAndUsersColumn socket={socket} username={nickname} room={target} /> */}
 
-      <div>
+      <div className="blablabla">
+        <h2>{target}</h2>
         <MessagesReceived socket={socket} />
         <SendMessage socket={socket} username={socket.id} room={target} />
       </div>
