@@ -1,10 +1,12 @@
 import styles from './styles.module.css';
 import { useState, useEffect, useRef } from 'react';
 import socket from '../../utils/Utils';
-
+import { AppContext } from "../../context/state";
+import { useContext } from "react";
 
 
 const Messages = ({ socket }) => {
+  const {target, setTarget} = useContext(AppContext)
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null); // Add this
   console.log("testtest01")
@@ -13,14 +15,16 @@ const Messages = ({ socket }) => {
     
     socket.on('receive_dm', (data) => {
       console.log(data);
-      setMessagesReceived((state) => [
-        ...state,
-        {
-          message: data.message,
-          username: data.username,
-          __createdtime__: data.__createdtime__,
-        },
-      ]);
+      if(data.username === target){
+        setMessagesReceived((state) => [
+          ...state,
+          {
+            message: data.message,
+            username: data.username,
+            __createdtime__: data.__createdtime__,
+          },
+        ]);
+      }
     });
 
     // Remove event listener on component unmount
