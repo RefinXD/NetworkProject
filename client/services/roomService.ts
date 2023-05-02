@@ -53,6 +53,31 @@ export const getRoomById = async (id: string) => {
   return res;
 };
 
+export const getAllRoomWithName = async (name: RoomInterface) => {
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  // console.log(name);
+  const axios_res = await axios.get(
+    `${appConfig.BACKEND_URL}/api/search?name=${name.roomname}`,
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<RoomInterface>;
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+  return res;
+};
+
 export const createRoom = async (data: RoomInterface) => {
   const configs =
     localStorage.getItem("accessToken") != undefined
