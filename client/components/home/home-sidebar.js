@@ -40,20 +40,20 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
       socket.emit("logout", nicknameTitle);
     }
   };
+  
   return (
     <div className={styles.roomAndUsersColumn}>
-      <h1 className={styles.usernameTitle}>{usernameTitle}</h1>
-      <h2 className={styles.nicknameTitle}>{nicknameTitle}</h2>
-
-      <ul className={styles.ListofOnlineUser}>
-        {roomUsers.map((user) => (
-          <li key={user._id}>{user.nickname}</li>
-        ))}
-      </ul>
-
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        logout
-      </button>
+      <h2 className={styles.nicknameTitle}>Hello, {nicknameTitle}</h2>
+      <h3 className={styles.usernameTitle}>@{usernameTitle}</h3>
+      <div>
+          <h5>Online user</h5>
+          <ul className={styles.ListofOnlineUser}>
+            {roomUsers.map((user) => (
+              <li key={user._id}>{user.nickname}</li>
+            ))}
+          </ul>
+      </div>
+      
     </div>
   );
 };
