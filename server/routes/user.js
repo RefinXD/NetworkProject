@@ -8,6 +8,7 @@ router.post("/user", userController.createUser);
 router.delete("/user", authUser, userController.deleteAllUser);
 router.delete("/user/:id", authUser, userController.deleteUserById);
 router.get("/user", authUser, userController.getAllUsers);
+router.get("/user/:nickname", authUser, userController.getUserByNickname);
 router.get("/onlineUsers", authUser, userController.getAllOnlineUsers);
 router.get("/user/:id", authUser, userController.getUserById);
 router.get("/user/friends/:id", authUser, userController.getFriendById);

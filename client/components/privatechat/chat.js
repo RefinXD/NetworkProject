@@ -6,11 +6,45 @@ import socket from "../../utils/Utils"; // Add this
 import SideBar from "./sideBar";
 import { AppContext } from "../../context/state";
 import { useContext } from "react";
+import { useState, useEffect } from "react";
+import {
+  getFriendsById,
+  getUserByNickname,
+  addFriendByFriendId,
+} from "../../services/userService";
+
 const PrivateChat = ({ nickname, room }) => {
   // Add this -- our server will run on port 4000, so we connect to it from here
-
   console.log("Chat page    ", nickname, "    ", room);
   const { target, setTarget } = useContext(AppContext);
+  const [userDetail, setUserDetail] = useState({});
+  const [isFriend, setIsFriend] = useState(true);
+  console.log(target);
+  useEffect(() => {
+    const userDetail = localStorage.getItem("user");
+    if (userDetail) {
+      setUserDetail(JSON.parse(userDetail));
+    }
+  }, []);
+  // console.log("privatechat", userDetail._id);
+  const checkIsFriend = async () => {
+    const userFriends = await getFriendsById(userDetail._id);
+    // console.log("userFriends", friendlists.data);
+    const friendlist = userFriends.data;
+    const res = await getUserByNickname(target);
+    console.log(res.data._id);
+    if (friendlist.includes(res.data._id)) {
+      setIsFriend(false);
+    } else {
+      setIsFriend(true);
+    }
+  };
+  const handleAddFriend = async () => {
+    const res = await getUserByNickname(target);
+    const addFriend = await addFriendByFriendId(userDetail._id, res.data._id);
+    console.log(addFriend);
+  };
+
   return (
     <div
       // className={styles.chatContainer}
@@ -19,10 +53,14 @@ const PrivateChat = ({ nickname, room }) => {
       {/* <RoomAndUsersColumn socket={socket} username={nickname} room={target} /> */}
 
       <div className="">
-        <div class={styles.chatHeader}>
-          <div class={styles.chatName}>{target}</div>
-          <div class={styles.addFriend}>
-            <button>Add Friend</button>
+        <div className={styles.chatHeader}>
+          <div className={styles.chatName}>{target}</div>
+          <div className={styles.addFriend}>
+            {isFriend ? (
+              <button onClick={handleAddFriend}>Add Friend</button>
+            ) : (
+              <div>Already friend</div>
+            )}
           </div>
         </div>
 

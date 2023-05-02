@@ -17,8 +17,13 @@ const UserController = {
       const checkDupeUsername = await User.findOne({
         username: payload.username,
       });
+      const checkDupeNickname = await User.findOne({
+        username: payload.nickname,
+      });
       if (checkDupeUsername)
         throw new ApiErrorResponse("username already existed", 406);
+      if (checkDupeNickname)
+        throw new ApiErrorResponse("nickname already existed", 406);
       if (!payload.password)
         throw new ApiErrorResponse("please specify password", 400);
       if (payload.password.length < 6)
@@ -126,6 +131,26 @@ const UserController = {
     const result = await tryCatchMongooseService(async () => {
       const userId = req.params.id;
       const user = await User.findById(userId);
+
+      return {
+        code: 200,
+        data: user,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
+
+  /**
+   * getUserByNickname
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+   */
+  async getUserByNickname(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const nickname = req.params.nickname;
+      const user = await User.findOne({ nickname: nickname });
 
       return {
         code: 200,

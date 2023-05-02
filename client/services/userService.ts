@@ -57,6 +57,30 @@ export const getUserById = async (id: string) => {
   return res;
 };
 
+export const getUserByNickname = async (nickname: string) => {
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  const axios_res = await axios.get(
+    `${appConfig.BACKEND_URL}/api/user/${nickname}`,
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+  return res;
+};
+
 export const createUser = async (data: UserInterface) => {
   const axios_res = await axios.post(`${appConfig.BACKEND_URL}/api/user`, data);
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
@@ -163,7 +187,7 @@ export const addFriendByFriendId = async (userid: string, friendid: string) => {
     { friendid },
     configs
   );
-  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+  const res = axios_res.data as ApiResponseInterface<String>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",
@@ -187,7 +211,7 @@ export const getFriendsById = async (id: string) => {
     `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
     configs
   );
-  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+  const res = axios_res.data as ApiResponseInterface<String>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",
