@@ -17,7 +17,7 @@ const Messages = ({ socket }) => {
     socket.on('receive_dm', (data) => {
       console.log(data);
       
-      if(data.username === userDetail.nickname){
+      if(data.username === target){
         setMessagesReceived((state) => [
           ...state,
           {
@@ -28,6 +28,21 @@ const Messages = ({ socket }) => {
         ]);
       }
     });
+
+    socket.on('echo_dm', (data) => {
+      console.log(data);
+      
+      if(data.username === userDetail.nickname){
+        setMessagesReceived((state) => [
+          ...state,
+          {
+            message: data.message,
+            username: data.username,
+            __createdtime__: data.__createdtime__,
+          },
+        ]);
+      }
+    })
 
     // Remove event listener on component unmount
     return () => socket.off('receive_dm');

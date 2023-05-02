@@ -221,7 +221,8 @@ io.on("connection", async (socket) => {
     console.log(message);
     console.log(username);
     console.log(room);
-    io.in(room).emit("receive_message", data); // Send to all users in room, including sender
+    io.in(room).emit("receive_message", data);
+    io.in(room).emit("echo_dm",data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))
     //   .catch((err) => console.log(err));
