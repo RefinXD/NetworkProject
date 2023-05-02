@@ -5,8 +5,8 @@ const Page  = () => {
   return (
   <>
     <NavBar/>
-    <SideBar/>
     <h1>Private Chat</h1>
+    <SideBar/>
   </>
   );
 }

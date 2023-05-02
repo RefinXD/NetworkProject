@@ -13,11 +13,9 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
     socket.emit("test",roomUsers)
     
     socket.on("online_users", (data) => {
-      
       setRoomUsers(data);
     });
-    return () => socket.off("online_users");
-  }, []);
+  },);
 
   //console.log("roomuser",roomUsers);
   // const leaveRoom = () => {
@@ -39,7 +37,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
       await router.push("/login");
       localStorage.removeItem("accessToken");
       localStorage.removeItem("token_expires");
-      socket.emit("logout")
+      socket.emit("logout",nicknameTitle)
     }
   };
   return (

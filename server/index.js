@@ -126,7 +126,7 @@ io.on("connection", async (socket) => {
   // console.log(io.sockets['sockets']);
   // console.log("after join room")
   socket.on("updateUsernames", (data) => {
-    console.log(data);
+    //console.log(data);
     const obj = JSON.parse(data);
     const name = obj.nickname;
     if (connectedUsers.indexOf(name) == -1) {
@@ -144,6 +144,7 @@ io.on("connection", async (socket) => {
       newObj = { _id: socket.id, nickname: element };
       onlineObj.push(newObj);
     });
+    console.log(onlineObj)
     socket.broadcast.emit("online_users",onlineObj);
     socket.emit("online_users", onlineObj);
   });
@@ -158,6 +159,7 @@ io.on("connection", async (socket) => {
     socket.emit("available_rooms", allRooms);
   });
 
+
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
     const { username, room } = data; // Data sent from client when join_room event emitted
@@ -168,7 +170,7 @@ io.on("connection", async (socket) => {
     console.log(chatRoomUsers)
     console.log("-----------chatroomuser-------", chatRoomUsers);
     socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers)
-    socket.to(room).emit("chatroom_users", chatRoomUsers);
+    //socket.to(room).emit("chatroom_users", chatRoomUsers);
     socket.emit("chatroom_users", chatRoomUsers);
     let __createdtime__ = Date.now(); // Current timestamp
     // Send message to all users currently in the room, apart from the user that just joined
@@ -178,8 +180,6 @@ io.on("connection", async (socket) => {
       __createdtime__,
     }); // Join the user to a socket room
   });
-
-
 
 
 
@@ -201,7 +201,12 @@ io.on("connection", async (socket) => {
     const __createdtime__ = Date.now();
     // Remove user from memory
     allUsers = leaveRoom(socket.id, allUsers);
-    socket.to(room).emit("chatroom_users", allUsers);
+    chatRoomUsers = allUsers.filter((user) => user.room === room);
+    console.log(chatRoomUsers)
+    console.log("-----------chatroomuser-------", chatRoomUsers);
+    socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers)
+    //socket.to(room).emit("chatroom_users", chatRoomUsers);
+    socket.emit("chatroom_users", chatRoomUsers);
     socket.to(room).emit("receive_message", {
       username: CHAT_BOT,
       message: `${username} has left the chat`,
@@ -211,12 +216,14 @@ io.on("connection", async (socket) => {
   });
 
 
-  socket.on("logout", () => {
+  socket.on("logout", (name) => {
     console.log("logout");
-    const targetUser = idMapping.get(socket.id);
+    const targetUser = name;
     const targetIdx = connectedUsers.indexOf(targetUser);
-    connectedUsers.splice(targetIdx);
-    idMapping.delete(socket.id);
+    console.log(targetIdx)
+    connectedUsers.splice(targetIdx,1);
+    console.log(connectedUsers)
+    idMapping.delete(usernameMapping.get(targetUser));
     usernameMapping.delete(targetUser);
     let onlineObj = [];
     connectedUsers.forEach((element) => {
@@ -225,7 +232,6 @@ io.on("connection", async (socket) => {
     });
     socket.broadcast.emit("online_users",onlineObj);
     socket.emit("online_users", onlineObj);
-    socket.disconnect();
   });
 
 
@@ -233,7 +239,7 @@ io.on("connection", async (socket) => {
     console.log("User disconnected from the chat",socket.id);
     const targetUser = idMapping.get(socket.id);
     const targetIdx = connectedUsers.indexOf(targetUser);
-    connectedUsers.splice(targetIdx);
+    connectedUsers.splice(targetIdx,1);
     idMapping.delete(socket.id);
     usernameMapping.delete(targetUser);
     let onlineObj = [];
