@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 function RoomComponent(props) {
   const [room, setRoom] = useState({
-    title: ""
+    title: "",
   });
 
   const onChange = (e) => {
@@ -12,15 +12,21 @@ function RoomComponent(props) {
     }));
   };
 
-  function submitRoom(event) {
-    if(room.title!==""){
-    props.onAdd(room);
-    setRoom({
-      title: "",
-    });
-}
-    event.preventDefault();
+  const onSearch = (e) => {
+    // setRoom((prev) => ({
+    //   ...prev,
+    //   [e.target.name]: e.target.value,
+    // }));
+  };
 
+  function submitRoom(event) {
+    if (room.title !== "") {
+      props.onAdd(room);
+      setRoom({
+        title: "",
+      });
+    }
+    event.preventDefault();
   }
 
   return (
@@ -33,7 +39,18 @@ function RoomComponent(props) {
           value={room.title}
           placeholder="Title"
         />
-        <button className={styles.addButton} onClick={submitRoom}>Add</button>
+
+        <input
+          className={styles.messageInput}
+          name="search"
+          onChange={onSearch}
+          value={room.title}
+          placeholder="search room"
+        />
+
+        <button className={styles.addButton} onClick={submitRoom}>
+          Add
+        </button>
       </form>
     </div>
   );
