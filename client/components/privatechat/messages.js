@@ -10,12 +10,14 @@ const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null); // Add this
   console.log("testtest01")
+  const userDetail = JSON.parse(localStorage.getItem("user"));
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     
     socket.on('receive_dm', (data) => {
       console.log(data);
-      if(data.username === target){
+      
+      if(data.username === userDetail.nickname){
         setMessagesReceived((state) => [
           ...state,
           {
