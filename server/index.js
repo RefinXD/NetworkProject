@@ -75,6 +75,7 @@ http = require("http");
 const server = http.createServer(app); // Add this
 const { Server } = require("socket.io"); // Add this
 const Room = require("./model/Room");
+const { sensitiveHeaders } = require("http2");
 
 const CHAT_BOT = "ChatBot"; // Add this
 let chatRoom = ""; // E.g. javascript, node,...
@@ -182,12 +183,43 @@ io.on("connection", async (socket) => {
   });
 
 
+  socket.on("user_join_dm",(sender,receiver) =>{
+    console.log("socket of" ,idMapping.get(socket.id))
+    const target = usernameMapping.get(receiver)
+    console.log(sender,receiver)
+    console.log("joining",target)
+    socket.join(target)
+    // io.in(target).emit("send_dm","test")
+    // io.in(socket.id).emit("send_dm","test")
+  })
+
+
+  socket.on("send_dm", (data) => {
+    console.log(data);
+    console.log("in send dm user:",socket.id)
+    const { message, username, room, __createdtime__ } = data;
+    target_room = usernameMapping.get(room);
+    console.log(1,message);
+    console.log(2,target_room);
+    console.log(3,username)
+    new_data = {
+      message:message,
+      room:target_room,
+      username:idMapping.get(username),
+      __createdtime__:__createdtime__
+    }
+    io.in(target_room).emit("receive_dm",new_data); // Send to all users in room, including sender
+    // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
+    //   .then((response) => console.log(response))
+    //   .catch((err) => console.log(err));
+  });
 
 
   socket.on("send_message", (data) => {
     const { message, username, room, __createdtime__ } = data;
     console.log(message);
     console.log(username);
+    console.log(room);
     io.in(room).emit("receive_message", data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))

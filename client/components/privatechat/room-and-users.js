@@ -18,14 +18,6 @@ const RoomAndUsers = ({ socket, username, room }) => {
     return () => socket.off('chatroom_users');
   }, [socket]);
 
-  const leaveRoom = () => {
-    const __createdtime__ = Date.now();
-    socket.emit('leave_room', { username, room, __createdtime__ });
-    // Redirect to home page
-    // navigate('/', { replace: true });
-    router.push('/')
-  };
-
   return (
     <div className={styles.roomAndUsersColumn}>
       <h2 className={styles.roomTitle}>{room}</h2>
@@ -46,9 +38,6 @@ const RoomAndUsers = ({ socket, username, room }) => {
         </ul>
       </div>
 
-      <button className='btn btn-outline' onClick={leaveRoom}>
-        Leave
-      </button>
     </div>
   );
 };

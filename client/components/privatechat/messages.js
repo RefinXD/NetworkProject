@@ -11,7 +11,7 @@ const Messages = ({ socket }) => {
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     
-    socket.on('receive_dm_message', (data) => {
+    socket.on('receive_dm', (data) => {
       console.log(data);
       setMessagesReceived((state) => [
         ...state,
@@ -24,7 +24,7 @@ const Messages = ({ socket }) => {
     });
 
     // Remove event listener on component unmount
-    return () => socket.off('receive_message');
+    return () => socket.off('receive_dm');
   }, [socket]);
 
   // Add this
