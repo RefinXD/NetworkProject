@@ -3,14 +3,18 @@
   height: 100vh;
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   background-color: #E6E3D8;
   
   }
-  
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
   /* Form Container */
-  .formContainer {
+  /* .formContainer {
   width: 400px;
   margin: 0 auto;
   padding: 32px;
@@ -20,7 +24,7 @@
   flex-direction: column;
   align-items: center;
   gap: 28px;
-  }
+  } */
   
   /* Form Input */
   .input {
@@ -36,42 +40,57 @@
   }
   
   /* Sidebar Container */
-  .sidebarContainer {
+  /* .sidebarContainer {
   width: 300px;
   height: 100%;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  } */
+
+  .sidebarContainer {
+    width: 25%;
+    float: left;
+    background-color: #fff;
+  }
+
+  .roomAndUsersColumn {
+  flex-basis: 25%;
+  height: 100vh;
+  background-color: #fff;
+  padding: 1rem;
+}
+
+  .nicknameTitle {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
   }
   
-/* Room and users column */
-.roomAndUsersColumn {
-  background-color: #333;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-  height: 100%;
-}
-
-.usernameTitle {
-  margin-bottom: 30px;
-  text-transform: uppercase;
-  font-size: 2rem;
-  color: #ffffff;
-}
-
-.nicknameTitle {
-  font-size: 1.1rem;
-  color: #d5d5d5;
-  margin-bottom: 20px;
-}
-.ListofOnlineUser {
-  font-size: 18px;
-  font-weight: bold;
-  padding: 20px;
-  margin: 0;
-  color: #a09f9f;
-  border-bottom: 1px solid #d9d9d9;
+  .usernameTitle {
+    font-size: 1.2rem;
+    color: gray;
+    margin-bottom: 20px;
+  }
+  
+  .ListofOnlineUser {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .ListofOnlineUser li {
+    margin-bottom: 10px;
+  }
+  
+  .ListofOnlineUser li:before {
+    content: "";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    background-color: green;
+    border-radius: 50%;
+    margin-right: 10px;
   }
 
   .usersList {
@@ -95,38 +114,124 @@
   font-weight: bold;
   }
 
-  .logoutButton {
-    margin-top: 30px;
-    padding: 10px;
-    font-size: 16px;
-    background-color: rgb(168, 0, 0);
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .logoutButton:hover {
-    background-color: #ccc;
-  }
-  
-  
-  
-  
-  .room {
+ 
+  .contentContainer{
+    width: 75%;
+    padding: 2rem;
 
-    border-radius: 7px;
-
-    padding: 10px;
-    width: 240px;
-    margin: 16px;
-    float: left;
   }
+
+.roomContainer {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.roomHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.searchContainer {
+  display: flex;
+}
+
+.searchInput {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  margin-right: 10px;
+  padding: 5px;
+  width: 100%;
+  border-radius: 4px;
+
+}
+
+.searchButton {
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;  
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.roomList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.roomItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.roomTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.joinButton {
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+
+  font-size: 1rem;
+  cursor: pointer;
+}
+  
+ 
+.formContainer {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.addButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #0069d9;
+}
+
+.addRight {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+/*   
   .messageInput {
     padding: 14px;
     margin-right: 16px;
-    width: 60%;
+    width: 80%;
     border-radius: 6px;
     border: 1px solid #a8a8a8;
     font-size: 0.9rem;
@@ -145,10 +250,18 @@
   
   .addButton:hover {
     background-color: #ccc;
-  }
+  } */
 
   /* room */
+ 
+  .room {
 
+    border-radius: 7px;
+    padding: 10px;
+    width: 240px;
+    margin: 16px;
+    float: left;
+  }
   .roomName {
     padding: 10px;
     margin-right: 16px;
@@ -157,18 +270,33 @@
     font-size: 0.9rem;
   }
   
-  .joinButton {
-    padding: 5px;
-    
-    font-size: 12px;
-    background-color: #840000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+
+
+  .ListofFollowingUser {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
   
-  .joinButton:hover {
-    background-color: #ffcdcd;
+  .ListofFollowingUser li {
+    margin-bottom: 10px;
   }
+  
+  .ListofFollowingUser li:before {
+    content: "";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .ListofFollowingUser li.active:before {
+    background-color: green;
+  }
+  
+  .ListofFollowingUser li.inactive:before {
+    background-color: gray;
+  }
+  
+  

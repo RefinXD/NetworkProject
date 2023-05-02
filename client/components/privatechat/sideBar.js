@@ -6,32 +6,28 @@ import Swal from "sweetalert2";
 import socket from "../../utils/Utils";
 import { AppContext } from "../../context/state";
 import { useContext } from "react";
-import { useRouter } from "next/router";
 
 const SideBar = () => {
   const [availableUser, SetAvailableUser] = useState([]);
+  const [currentChatUser, SetCurrentChatUser] = useState("");
+  const { target, setTarget } = useContext(AppContext);
   //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
-  const userDetail = JSON.parse(localStorage.getItem("user"));
-
-
-  const router = useRouter();
-  // function test(sender,receiver){
-  //   SetCurrentChatUser(receiver)
-  //   setTarget(receiver);
-  //   console.log(userDetail)
-  //   let user = userDetail.nickname;
-  //   socket.emit("changeUser");
-  //   socket.emit("user_join_dm",sender,receiver)
-  // }
+  const userDetail= JSON.parse(localStorage.getItem("user"));
+  function test(sender, receiver) {
+    SetCurrentChatUser(receiver);
+    setTarget(receiver);
+    console.log(userDetail);
+    let user = userDetail.nickname;
+    socket.emit("changeUser");
+    socket.emit("user_join_dm", sender, receiver);
+  }
   useEffect(() => {
-    
+    const userDetail = localStorage.getItem("user");
     socket.emit("updateUsernames",userDetail)
-    console.log("asdasdsadasd",userDetail)
     socket.on("online_users", (data) => {
-
-        console.log("ewqrwer",data)
-        SetAvailableUser([])
-        SetAvailableUser(data);
+      console.log(data);
+      SetAvailableUser([]);
+      SetAvailableUser(data);
     });
   }
 
@@ -57,7 +53,7 @@ async function startChat() {
   //   socket.emit('leave_room', { username, room, __createdtime__ });
   //   router.push('/')
   // };
-  
+
   return (
     // <div className={styles.roomAndUsersColumn}>
     <div>
@@ -69,15 +65,16 @@ async function startChat() {
        */}
       <div className={styles.ListofOnlineUser}>
         {availableUser.map((user) => (
-          // <div key={user._id}>{user.nickname} <button onClick={test.bind(this,userDetail.nickname,user.nickname)}>chat</button>
-          // </div>
-          <div key={user.id}>{user.nickname} 
-          <button onClick={startChat}>chat</button>
+          <div key={user._id}>
+            {user.nickname}{" "}
+            <button
+              onClick={test.bind(this, userDetail.nickname, user.nickname)}
+            >
+              chat
+            </button>
           </div>
         ))}
       </div>
-
-      
     </div>
   );
 };

@@ -51,6 +51,8 @@ const Home = () => {
   }
 
   async function searchRoom(event) {
+    // console.log("clickkkkkkkkkkkkkkk")
+    // console.log("nameroommmmmmmmm",roomSearch.name)
     if (roomSearch.title !== "") {
       const res = await getAllRoomWithName(roomSearch.name);
       let roomList = [];
@@ -58,48 +60,56 @@ const Home = () => {
         roomList.push({ title: element.roomname });
       });
       setRooms(roomList);
-      console.log(res.data);
+      // console.log("resulttttttttttt", res.data);
     }
   }
   return (
     <>
-      <NavBar isLoggedIn={isLoggedIn} />
-      <div className={styles.container}>
-        <div className={styles.sidebarContainer}>
-          <RoomAndUsersColumn
-            socket={socket}
-            nicknameTitle={userDetail.nickname}
-            usernameTitle={userDetail.username}
-          />
-        </div>
-        <div className={styles.formContainer}>
-          <h1>{`ChitChat`}</h1>
-          <h2>HELLO !! {userDetail.nickname}</h2>
-          <input
-            className={styles.messageInput}
-            name="search"
-            onChange={onSearch}
-            value={roomSearch.name}
-            placeholder="search room"
-          />
-          <div>
-            <RoomComponent onAdd={addRoom} />
-            {rooms.map((roomItem, index) => {
-              return (
-                <Room
-                  key={index}
-                  id={index}
-                  title={roomItem.title}
-                  onJoin={joinRoom}
-                />
-              );
-            })}
+      <div className={styles.wrapper}>
+        <NavBar isLoggedIn={isLoggedIn} />
+
+        <div className={styles.container}>
+          <div className={styles.sidebarContainer}>
+            <RoomAndUsersColumn
+              socket={socket}
+              nicknameTitle={userDetail.nickname}
+              usernameTitle={userDetail.username}
+            />
           </div>
 
-          <button className={styles.addButton} onClick={searchRoom}>
-            Search
-          </button>
-        </div>
+          <div className={styles.contentContainer}>
+              <div className={styles.roomHeader}>
+                <h2>All Rooms</h2>
+                <div className={styles.searchContainer}>
+                  <input
+                    className={styles.searchInput}
+                    name="name"
+                    onChange={onSearch}
+                    value={roomSearch.name}
+                    placeholder="Search rooms"
+                  />
+                  <button className={styles.searchButton} onClick={searchRoom}>
+                    Search
+                  </button>
+                </div>
+              </div>
+
+              <ul className={styles.roomList}>
+                {rooms.map((roomItem, index) => (
+                  <li key={index} className={styles.roomItem}>
+                    <div className={styles.roomTitle}>{roomItem.title}</div>
+                    <button
+                      className={styles.joinButton}
+                      onClick={() => joinRoom(roomItem.id)}
+                    >
+                      Join
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <RoomComponent onAdd={addRoom}/>
+            </div>
+          </div>
       </div>
     </>
   );

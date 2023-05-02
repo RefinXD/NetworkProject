@@ -24,22 +24,20 @@ function RoomComponent(props) {
     }
     event.preventDefault();
   }
-
   return (
-    <div>
-      <form>
-        <input
-          className={styles.messageInput}
-          name="title"
-          onChange={onChange}
-          value={room.title}
-          placeholder="Title"
-        />
-
+    <div className={styles.formContainer}>
+      <input
+        className={styles.messageInput}
+        name="title"
+        onChange={onChange}
+        value={room.title}
+        placeholder="Title"
+      />
+      <div className={styles.addRight}>
         <button className={styles.addButton} onClick={submitRoom}>
           Add
         </button>
-      </form>
+      </div>
     </div>
   );
 }

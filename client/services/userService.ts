@@ -173,7 +173,7 @@ export const userLogin = async (username: string, password: string) => {
   return res;
 };
 
-export const addFriendByFriendId = async (userid: string, friendid: string) => {
+export const addFriendById = async (userid: string, friendid: string) => {
   const configs =
     localStorage.getItem("accessToken") != undefined
       ? {
@@ -182,12 +182,14 @@ export const addFriendByFriendId = async (userid: string, friendid: string) => {
           },
         }
       : {};
-  const axios_res = await axios.put(
+
+  const axios_res = await axios.post(
     `${appConfig.BACKEND_URL}/api/user/friends/${userid}`,
     { friendid },
     configs
   );
-  const res = axios_res.data as ApiResponseInterface<String>;
+
+  const res = axios_res.data as ApiResponseInterface<UserInterface>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",
@@ -198,7 +200,34 @@ export const addFriendByFriendId = async (userid: string, friendid: string) => {
   return res;
 };
 
-export const getFriendsById = async (id: string) => {
+export const getFriendsById = async (id: String) => {
+
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  // console.log(id);
+  const axios_res = await axios.get(
+    `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<UserInterface>;
+
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+  return res;
+};
+
+export const getFriendsNameById = async (id: string) => {
   const configs =
     localStorage.getItem("accessToken") != undefined
       ? {
@@ -208,7 +237,7 @@ export const getFriendsById = async (id: string) => {
         }
       : {};
   const axios_res = await axios.get(
-    `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
+    `${appConfig.BACKEND_URL}/api/user/friendsname/${id}`,
     configs
   );
   const res = axios_res.data as ApiResponseInterface<String>;

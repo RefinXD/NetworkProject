@@ -53,7 +53,7 @@ export const getRoomById = async (id: string) => {
   return res;
 };
 
-export const getAllRoomWithName = async (name: RoomInterface) => {
+export const getAllRoomWithName = async (name: String) => {
   const configs =
     localStorage.getItem("accessToken") != undefined
       ? {
@@ -62,12 +62,12 @@ export const getAllRoomWithName = async (name: RoomInterface) => {
           },
         }
       : {};
-  // console.log(name);
+      
   const axios_res = await axios.get(
-    `${appConfig.BACKEND_URL}/api/search?name=${name.roomname}`,
+    `${appConfig.BACKEND_URL}/api/search?name=${name}`,
     configs
   );
-  const res = axios_res.data as ApiResponseInterface<RoomInterface>;
+  const res = axios_res.data as ApiResponseInterface<String>;
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",
