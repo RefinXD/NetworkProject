@@ -6,6 +6,8 @@ import { createUser } from "../../services/userService";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import NavBar from "../layout/navBar";
+import Swal from "sweetalert2";
+
 export default function Register() {
   const [formData, setFormData] = useState({
     nickname: "",
@@ -28,6 +30,11 @@ export default function Register() {
 
     if (isSuccess) {
       toast.success("Registration successful");
+      Swal.fire({
+        text: "Register success!",
+        icon: "success",
+        timer: 2000,
+      });
       router.push("./login");
     }
   }, [isError, isSuccess]);
@@ -50,6 +57,7 @@ export default function Register() {
     setIsLoading(true);
     setIsError(false);
     setIsSuccess(false);
+
 
     try {
       const userData = {
