@@ -95,6 +95,24 @@
   font-weight: bold;
   }
 
+  .logoutButton {
+    margin-top: 30px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgb(168, 0, 0);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .logoutButton:hover {
+    background-color: #ccc;
+  }
+  
+  
+  
   
   .room {
 

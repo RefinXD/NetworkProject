@@ -34,7 +34,6 @@ const Home = () => {
       setUserDetail(JSON.parse(userDetail));
       setIsLoggedIn(true);
     }
-    
   }, []);
 
   
