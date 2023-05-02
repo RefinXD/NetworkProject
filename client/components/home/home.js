@@ -20,6 +20,7 @@ const Home = () => {
     const userDetail = localStorage.getItem("user");
     socket.connect();
     socket.emit("updateUsernames",userDetail)
+    console.log(userDetail)
     socket.on("available_rooms", (data) => {
       
       let roomList = [];
