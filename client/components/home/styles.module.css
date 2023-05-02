@@ -270,4 +270,33 @@
     font-size: 0.9rem;
   }
   
+
+
+  .ListofFollowingUser {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .ListofFollowingUser li {
+    margin-bottom: 10px;
+  }
+  
+  .ListofFollowingUser li:before {
+    content: "";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .ListofFollowingUser li.active:before {
+    background-color: green;
+  }
+  
+  .ListofFollowingUser li.inactive:before {
+    background-color: gray;
+  }
+  
   

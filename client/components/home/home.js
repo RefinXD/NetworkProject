@@ -51,14 +51,16 @@ const Home = () => {
   }
 
   async function searchRoom(event) {
+    // console.log("clickkkkkkkkkkkkkkk")
+    // console.log("nameroommmmmmmmm",roomSearch.name)
     if (roomSearch.title !== "") {
-      const res = await getAllRoomWithName({ roomname: roomSearch.name });
+      const res = await getAllRoomWithName(roomSearch.name);
       let roomList = [];
       res.data.forEach((element) => {
         roomList.push({ title: element.roomname });
       });
       setRooms(roomList);
-      console.log(res.data);
+      // console.log("resulttttttttttt", res.data);
     }
   }
   return (
