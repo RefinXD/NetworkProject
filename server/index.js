@@ -75,6 +75,7 @@ http = require("http");
 const server = http.createServer(app); // Add this
 const { Server } = require("socket.io"); // Add this
 const Room = require("./model/Room");
+const DirectRoom = require("./model/DirectRoom");
 const { sensitiveHeaders } = require("http2");
 
 const CHAT_BOT = "ChatBot"; // Add this
@@ -130,14 +131,15 @@ io.on("connection", async (socket) => {
   // console.log(io.sockets['sockets']);
   // console.log("after join room")
   socket.on("updateUsernames", (data) => {
-    //console.log(data);
+   
     const obj = JSON.parse(data);
     const name = obj.nickname;
+    const userid = obj._id
     if (connectedUsers.indexOf(name) == -1) {
-      connectedUsers.push(name);
+      connectedUsers.push({name,userid});
       console.log(connectedUsers);
       usernameMapping.set(name, socket.id);
-      idMapping.set(socket.id, name);
+      idMapping.set(socket.id, {name,userid});
       // console.log(usernameMapping.get(name))
       // console.log(idMapping.get(socket.id))
     } else {
@@ -145,11 +147,13 @@ io.on("connection", async (socket) => {
     }
     let onlineObj = [];
     connectedUsers.forEach((element) => {
-      newObj = { _id: usernameMapping.get(element), nickname: element };
+     
+      newObj = { _id: usernameMapping.get(element.name), nickname: element.name,id:element.userid };
       onlineObj.push(newObj);
     });
-    console.log("online", onlineObj);
+
     socket.broadcast.emit("online_users", onlineObj);
+
     socket.emit("online_users", onlineObj);
   });
   // const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
@@ -175,41 +179,64 @@ io.on("connection", async (socket) => {
       __createdtime__,
     }); // Join the user to a socket room
   });
-
-
-  socket.on("user_join_dm",(sender,receiver) =>{
-    console.log("socket of" ,idMapping.get(socket.id))
-    const target = usernameMapping.get(receiver)
-    console.log(sender,receiver)
-    console.log("joining",target)
-    console.log(receiver)
-    socket.join(receiver)
-    // io.in(target).emit("send_dm","test")
-    // io.in(socket.id).emit("send_dm","test")
+  socket.on("join_directroom", (data) => {
+    // console.log("data from join room",data)
+    const { username, directroom } = data; // Data sent from client when join_room event emitted
+    socket.join(directroom);
+    chatRoom = directroom;
+    allUsers.push({ id: socket.id, username, directroom });
+    chatRoomUsers = allUsers.filter((user) => user.room === directroom);
+    console.log(chatRoomUsers);
+    console.log("-----------chatroomuser-------", chatRoomUsers);
+    socket.broadcast.to(directroom).emit("chatroom_users", chatRoomUsers);
+    //socket.to(room).emit("chatroom_users", chatRoomUsers);
+    socket.emit("chatroom_users", chatRoomUsers);
+    let __createdtime__ = Date.now(); // Current timestamp
+    // Send message to all users currently in the room, apart from the user that just joined
+    socket.to(directroom).emit("receive_message", {
+      message: `${username} has joined the chat room`,
+      username: CHAT_BOT,
+      __createdtime__,
+    }); // Join the user to a socket room
   });
 
-  socket.on("send_dm", (data) => {
-    console.log(data);
-    console.log("in send dm user:", socket.id);
-    const { message, username, room, __createdtime__ } = data;
-    target_room = usernameMapping.get(room);
-    console.log(1,message);
-    console.log(2,target_room,room);
-    console.log(3,username)
-    new_data = {
-      message:message,
-      room:target_room,
-      username:idMapping.get(username),
-      __createdtime__:__createdtime__
-    }
-    //send to sender'sroom the user is joining
-    io.in(room).emit("echo_dm",new_data);
-    //send to receiver
-    io.in(target_room).emit("receive_dm",new_data); // Send to all users in room, including sender
-    // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
-    //   .then((response) => console.log(response))
-    //   .catch((err) => console.log(err));
-  });
+
+
+  // socket.on("user_join_dm",(sender,receiver) =>{
+  //   console.log("socket of" ,idMapping.get(socket.id))
+  //   const target = usernameMapping.get(receiver)
+  //   console.log(sender,receiver)
+  //   console.log("joining",target)
+  //   console.log(receiver)
+  //   socket.join(receiver)
+  //   // io.in(target).emit("send_dm","test")
+  //   // io.in(socket.id).emit("send_dm","test")
+  // });
+
+  // socket.on("send_dm", (data) => {
+  //   console.log(data);
+  //   console.log("in send dm user:", socket.id);
+  //   const { message, username, room, __createdtime__ } = data;
+  //   target_room = usernameMapping.get(room);
+  //   console.log(1,message);
+  //   console.log(2,target_room,room);
+  //   console.log(3,username)
+  //   new_data = {
+  //     message:message,
+  //     room:target_room,
+  //     username:idMapping.get(username),
+  //     __createdtime__:__createdtime__
+  //   }
+  //   //send to sender'sroom the user is joining
+  //   io.in(room).emit("echo_dm",new_data);
+  //   //send to receiver
+  //   io.in(target_room).emit("receive_dm",new_data); // Send to all users in room, including sender
+  //   // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
+  //   //   .then((response) => console.log(response))
+  //   //   .catch((err) => console.log(err));
+  // });
+
+
   socket.on("changeUser",()=>{
     socket.emit("clear")
   })
