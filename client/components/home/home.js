@@ -17,21 +17,12 @@ const Home = () => {
   const [roomSearch, setRoomSearch] = useState({
     name: "",
   });
-  const [searchResults, setSearchResults] = useState({});
-
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
+    searchRoom();
     socket.connect();
     socket.emit("updateUsernames", userDetail);
-    console.log(userDetail);
-    socket.on("available_rooms", (data) => {
-      let roomList = [];
-
-      data.forEach((element) => {
-        roomList.push({ title: element.roomname });
-      });
-      setRooms(roomList);
-    });
+    //console.log(userDetail);
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
       setIsLoggedIn(true);
@@ -40,8 +31,6 @@ const Home = () => {
 
   const onSearch = (event) => {
     setRoomSearch({ name: event.target.value });
-    // console.log(roomSearch.name);
-    // const res = await getAllRoomWithName(roomSearch.name);
   };
 
   function joinRoom(title) {
@@ -56,23 +45,22 @@ const Home = () => {
     }
   }
   async function addRoom(newRoom) {
-    console.log("newroom", newRoom.title);
     await createRoom({ roomname: newRoom.title });
-    setRooms((prevRooms) => {
-      return [...prevRooms, newRoom];
-    });
+    searchRoom();
     socket.emit("test", rooms);
   }
 
   async function searchRoom(event) {
     if (roomSearch.title !== "") {
-      // console.log(roomSearch.name)
       const res = await getAllRoomWithName({ roomname: roomSearch.name });
+      let roomList = [];
+      res.data.forEach((element) => {
+        roomList.push({ title: element.roomname });
+      });
+      setRooms(roomList);
       console.log(res.data);
     }
-    // event.preventDefault();
   }
-
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -84,7 +72,6 @@ const Home = () => {
             usernameTitle={userDetail.username}
           />
         </div>
-
         <div className={styles.formContainer}>
           <h1>{`ChitChat`}</h1>
           <h2>HELLO !! {userDetail.nickname}</h2>

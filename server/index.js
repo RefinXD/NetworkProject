@@ -93,6 +93,8 @@ const io = new Server(server, {
       "http://192.168.1.33:3000",
       "http://172.20.10.4:3000",
       "http://172.20.10.12:3000",
+      "http:///182.232.53.57:3000"
+
     ],
     methods: ["GET", "POST"],
   },
@@ -152,14 +154,6 @@ io.on("connection", async (socket) => {
   });
   // const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
   // console.log(onlineUsers)
-  const allRooms = await Room.find();
-  socket.emit("available_rooms", allRooms);
-
-  // We can write our socket event listeners in here...
-  socket.on("test", async (data) => {
-    const allRooms = await Room.find();
-    socket.emit("available_rooms", allRooms);
-  });
 
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
