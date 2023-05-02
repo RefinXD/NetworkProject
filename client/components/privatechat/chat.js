@@ -34,18 +34,26 @@ const PrivateChat = ({ nickname, room }) => {
     const res = await getUserByNickname(target);
     console.log(res.data._id);
     if (friendlist.includes(res.data._id)) {
-      setIsFriend(false);
-    } else {
       setIsFriend(true);
+    } else {
+      setIsFriend(false);
     }
   };
   const handleAddFriend = async () => {
     const r = await getFriendsById(userDetail._id);
     console.log(r);
     const res = await getUserByNickname(target);
-    const addFriend = await addFriendById(userDetail._id.toString(), res.data._id.toString());
+    const addFriend = await addFriendById(
+      userDetail._id.toString(),
+      res.data._id.toString()
+    );
     console.log(addFriend);
+    setIsFriend(true);
   };
+  useEffect(() => {}, [isFriend]);
+
+  checkIsFriend();
+  console.log(isFriend);
 
   return (
     <div
@@ -58,10 +66,10 @@ const PrivateChat = ({ nickname, room }) => {
         <div className={styles.chatHeader}>
           <div className={styles.chatName}>{target}</div>
           <div className={styles.addFriend}>
-            {isFriend ? (
-              <button onClick={handleAddFriend}>Add Friend</button>
+            {!isFriend ? (
+              <button onClick={handleAddFriend}>Follow</button>
             ) : (
-              <div>Already friend</div>
+              <div>Following</div>
             )}
           </div>
         </div>

@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import socket from "../../utils/Utils";
 import { AppContext } from "../../context/state";
-import { useContext } from "react";
+import { useContext } from "react"; 
+
 const SideBar = () => {
   const [availableUser, SetAvailableUser] = useState([]);
   const [currentChatUser, SetCurrentChatUser] = useState("");
