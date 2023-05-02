@@ -4,18 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import socket from "../../utils/Utils";
-
+import { AppContext } from "../../context/state";
+import { useContext } from "react";
 const SideBar = () => {
   const [availableUser, SetAvailableUser] = useState([]);
   const [currentChatUser, SetCurrentChatUser] = useState("");
-  
+  const {target, setTarget} = useContext(AppContext)
   //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
-  const router = useRouter();
-  
-  function test(username,socket_id){
-    SetCurrentChatUser(username)
-    console.log(availableUser)
-    socket.emit("user_join_dm",socket_id)
+  const userDetail = JSON.parse(localStorage.getItem("user"));
+  function test(sender,receiver){
+    SetCurrentChatUser(receiver)
+    setTarget(receiver);
+    console.log(userDetail)
+    let user = userDetail.nickname;
+    socket.emit("user_join_dm",sender,receiver)
   }
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
@@ -44,12 +46,12 @@ const SideBar = () => {
 
       <div className={styles.ListofOnlineUser}>
         {availableUser.map((user) => (
-          <div key={user._id}>{user.nickname} <button onClick={test.bind(this,user.nickname,user._id)}>chat</button></div>
+          <div key={user._id}>{user.nickname} <button onClick={test.bind(this,userDetail.nickname,user.nickname)}>chat</button></div>
         ))}
       </div>
 
       <div id="currentUser">
-        Currently chatting with {currentChatUser}
+        Hello {userDetail.nickname}, you are currently chatting with {currentChatUser}
       </div>
     </div>
   );

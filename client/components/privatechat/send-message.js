@@ -4,28 +4,29 @@ import React, { useState } from 'react'
 
 const SendMessage = ({ socket, username, room }) => {
   const [message, setMessage] = useState('');
+  console.log(username,room)
   console.log("send Message   ",username,room,socket);
   const sendMessage = () => {
     if (message !== '') {
       const __createdtime__ = Date.now();
       // Send message to server. We can't specify who we send the message to from the frontend. We can only send to server. Server can then send message to rest of users in room
-      socket.emit('send_message', { username, room, message, __createdtime__ });
+      socket.emit('send_dm', { username, room, message, __createdtime__ });
       setMessage('');
     }
   };
 
-  onMessage(content) {
-    if (this.selectedUser) {
-      socket.emit("private message", {
-        content,
-        to: this.selectedUser.userID,
-      });
-      this.selectedUser.messages.push({
-        content,
-        fromSelf: true,
-      });
-    }
-  }
+  // onMessage(content) {
+  //   if (this.selectedUser) {
+  //     socket.emit("private message", {
+  //       content,
+  //       to: this.selectedUser.userID,
+  //     });
+  //     this.selectedUser.messages.push({
+  //       content,
+  //       fromSelf: true,
+  //     });
+  //   }
+  // }
 
   return (
     <div className={styles.sendMessageContainer}>
