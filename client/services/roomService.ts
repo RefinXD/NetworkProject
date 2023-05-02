@@ -64,7 +64,7 @@ export const getAllRoomWithName = async (name: String) => {
       : {};
   // console.log(name);
   const axios_res = await axios.get(
-    `${appConfig.BACKEND_URL}/api/search?name=${name.roomname}`,
+    `${appConfig.BACKEND_URL}/api/search?name=${name}`,
     configs
   );
   const res = axios_res.data as ApiResponseInterface<String>;

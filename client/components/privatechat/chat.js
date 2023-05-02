@@ -28,20 +28,24 @@ const PrivateChat = ({ nickname, room }) => {
   }, []);
   // console.log("privatechat", userDetail._id);
   const checkIsFriend = async () => {
+    if (!userDetail._id) {
+      return;
+    }
     const userFriends = await getFriendsById(userDetail._id);
     // console.log("userFriends", friendlists.data);
     const friendlist = userFriends.data;
     const res = await getUserByNickname(target);
-    console.log(res.data._id);
-    if (friendlist.includes(res.data._id)) {
+    // console.log(res.data._id);
+    if (friendlist.includes(res.data?._id)) {
       setIsFriend(true);
     } else {
       setIsFriend(false);
     }
   };
   const handleAddFriend = async () => {
-    const r = await getFriendsById(userDetail._id);
-    console.log(r);
+    // if (userDetail._id === null) {
+    // const r = await getFriendsById(userDetail._id.toString().trim());
+    // console.log(r);
     const res = await getUserByNickname(target);
     const addFriend = await addFriendById(
       userDetail._id.toString(),
