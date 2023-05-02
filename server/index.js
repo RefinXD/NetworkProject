@@ -126,7 +126,7 @@ io.on("connection", async (socket) => {
   // console.log(io.sockets['sockets']);
   // console.log("after join room")
   socket.on("updateUsernames", (data) => {
-    console.log(data);
+    //console.log(data);
     const obj = JSON.parse(data);
     const name = obj.nickname;
     if (connectedUsers.indexOf(name) == -1) {
@@ -158,6 +158,7 @@ io.on("connection", async (socket) => {
     socket.emit("available_rooms", allRooms);
   });
 
+
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
     const { username, room } = data; // Data sent from client when join_room event emitted
@@ -178,8 +179,6 @@ io.on("connection", async (socket) => {
       __createdtime__,
     }); // Join the user to a socket room
   });
-
-
 
 
 
