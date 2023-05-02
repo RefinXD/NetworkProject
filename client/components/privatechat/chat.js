@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import {
   getFriendsById,
   getUserByNickname,
-  addFriendByFriendId,
+  addFriendById,
 } from "../../services/userService";
 
 const PrivateChat = ({ nickname, room }) => {
@@ -40,8 +40,10 @@ const PrivateChat = ({ nickname, room }) => {
     }
   };
   const handleAddFriend = async () => {
+    const r = await getFriendsById(userDetail._id);
+    console.log(r);
     const res = await getUserByNickname(target);
-    const addFriend = await addFriendByFriendId(userDetail._id, res.data._id);
+    const addFriend = await addFriendById(userDetail._id.toString(), res.data._id.toString());
     console.log(addFriend);
   };
 

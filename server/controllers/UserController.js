@@ -211,10 +211,10 @@ const UserController = {
   async addFriendById(req, res, next) {
     const result = await tryCatchMongooseService(async () => {
       const userId = req.params.id;
-      const friendId = req.body.friendId;
+      console.log(req.body)
+      const friendId = req.body.friendid;
       const friend = await User.findById(friendId);
       const user = await User.findById(userId);
-      console.log(userId);
       if (!friend) {
         return res.status(404).json({ error: "User not found" });
       }
