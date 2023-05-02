@@ -141,10 +141,10 @@ io.on("connection", async (socket) => {
     }
     let onlineObj = [];
     connectedUsers.forEach((element) => {
-      newObj = { _id: socket.id, nickname: element };
+      newObj = { _id: usernameMapping.get(element), nickname: element };
       onlineObj.push(newObj);
     });
-    console.log(onlineObj)
+    console.log("online",onlineObj)
     socket.broadcast.emit("online_users",onlineObj);
     socket.emit("online_users", onlineObj);
   });

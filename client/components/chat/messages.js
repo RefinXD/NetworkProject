@@ -7,11 +7,11 @@ import socket from '../../utils/Utils';
 const Messages = ({ socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null); // Add this
-  console.log("testtest01")
+  // console.log("testtest01")
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     socket.on('receive_message', (data) => {
-      console.log(data);
+      // console.log(data);
       setMessagesReceived((state) => [
         ...state,
         {
