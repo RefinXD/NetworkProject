@@ -199,13 +199,9 @@ export const addFriendById = async (userid: string, friendid: string) => {
     );
   return res;
 };
-const mongoose = require("mongoose");
 
 export const getFriendsById = async (id: String) => {
-  console.log("iddddddd", id);
-  if (!mongoose.Types.ObjectId.isValid(id.toString().trim())) {
-    throw new Error("Invalid id");
-  }
+
   const configs =
     localStorage.getItem("accessToken") != undefined
       ? {
@@ -214,14 +210,13 @@ export const getFriendsById = async (id: String) => {
           },
         }
       : {};
-  console.log(id);
+  // console.log(id);
   const axios_res = await axios.get(
     `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
     configs
   );
   const res = axios_res.data as ApiResponseInterface<UserInterface>;
-  console.log(res);
-  console.log(res.code);
+
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",
