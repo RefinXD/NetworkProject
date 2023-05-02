@@ -22,7 +22,7 @@ const Messages = ({ socket }) => {
     socket.on('receive_dm', (data) => {
       console.log(data);
       console.log(target)
-      
+      if(data.username === target)
         setMessagesReceived((state) => [
           ...state,
           {
