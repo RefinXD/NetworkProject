@@ -77,7 +77,7 @@ const Home = () => {
 
           <div className={styles.contentContainer}>
               <div className={styles.roomHeader}>
-                <h3>All Rooms</h3>
+                <h2>All Rooms</h2>
                 <div className={styles.searchContainer}>
                   <input
                     className={styles.searchInput}
