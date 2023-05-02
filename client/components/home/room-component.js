@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
+import { getAllRoomWithName } from "../../services/roomService";
+
 function RoomComponent(props) {
   const [room, setRoom] = useState({
     title: "",
   });
+
 
   const onChange = (e) => {
     setRoom((prev) => ({
@@ -12,12 +15,6 @@ function RoomComponent(props) {
     }));
   };
 
-  const onSearch = (e) => {
-    // setRoom((prev) => ({
-    //   ...prev,
-    //   [e.target.name]: e.target.value,
-    // }));
-  };
 
   function submitRoom(event) {
     if (room.title !== "") {
@@ -38,14 +35,6 @@ function RoomComponent(props) {
           onChange={onChange}
           value={room.title}
           placeholder="Title"
-        />
-
-        <input
-          className={styles.messageInput}
-          name="search"
-          onChange={onSearch}
-          value={room.title}
-          placeholder="search room"
         />
 
         <button className={styles.addButton} onClick={submitRoom}>

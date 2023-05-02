@@ -7,29 +7,30 @@ import RoomComponent from "./room-component";
 import Room from "./room";
 import NavBar from "../layout/navBar";
 
-import {createRoom} from "../../services/roomService";
-
+import { createRoom, getAllRoomWithName } from "../../services/roomService";
 
 const Home = () => {
   const router = useRouter();
   const [userDetail, setUserDetail] = useState({});
   const [rooms, setRooms] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState();
+  const [roomSearch, setRoomSearch] = useState({
+    name: "",
+  });
+  const [results, setResults] = useState({});
 
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
     socket.connect();
-    socket.emit("updateUsernames",userDetail)
-    console.log(userDetail)
+    socket.emit("updateUsernames", userDetail);
+    console.log(userDetail);
     socket.on("available_rooms", (data) => {
-      
       let roomList = [];
-     
-      data.forEach(element => {
-        roomList.push( {title:element.roomname})
+
+      data.forEach((element) => {
+        roomList.push({ title: element.roomname });
       });
-      setRooms(roomList)
-      
+      setRooms(roomList);
     });
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
@@ -37,7 +38,18 @@ const Home = () => {
     }
   }, []);
 
-  
+  const handleSearch = async () => {
+    const response = await getAllRoomWithName(roomSearch.name);
+    setResults(response.data);
+    console.log(results)
+  };
+
+  const onSearch = (event) => {
+    setRoomSearch({ name: event.target.value });
+    handleSearch();
+    // console.log(roomSearch.name);
+    // const res = await getAllRoomWithName(roomSearch.name);
+  };
 
   function joinRoom(title) {
     console.log("listroom", title);
@@ -52,43 +64,49 @@ const Home = () => {
   }
   async function addRoom(newRoom) {
     console.log("newroom", newRoom.title);
-    await createRoom({roomname: newRoom.title});
+    await createRoom({ roomname: newRoom.title });
     setRooms((prevRooms) => {
       return [...prevRooms, newRoom];
     });
-    socket.emit("test",rooms)
+    socket.emit("test", rooms);
   }
   return (
     <>
-    <NavBar isLoggedIn={isLoggedIn}/>
-    <div className={styles.container}>
-      <div className={styles.sidebarContainer}>
-        <RoomAndUsersColumn
-          socket={socket}
-          nicknameTitle={userDetail.nickname}
-          usernameTitle={userDetail.username}
-        />
-      </div>
+      <NavBar isLoggedIn={isLoggedIn} />
+      <div className={styles.container}>
+        <div className={styles.sidebarContainer}>
+          <RoomAndUsersColumn
+            socket={socket}
+            nicknameTitle={userDetail.nickname}
+            usernameTitle={userDetail.username}
+          />
+        </div>
 
-      <div className={styles.formContainer}>
-        <h1>{`ChitChat`}</h1>
-        <h2>HELLO !! {userDetail.nickname}</h2>
-
-        <div>
-          <RoomComponent onAdd={addRoom} />
-          {rooms.map((roomItem, index) => {
-            return (
-              <Room
-                key={index}
-                id={index}
-                title={roomItem.title}
-                onJoin={joinRoom}
-              />
-            );
-          })}
+        <div className={styles.formContainer}>
+          <h1>{`ChitChat`}</h1>
+          <h2>HELLO !! {userDetail.nickname}</h2>
+          <input
+            className={styles.messageInput}
+            name="search"
+            onChange={onSearch}
+            value={roomSearch.name}
+            placeholder="search room"
+          />
+          <div>
+            <RoomComponent onAdd={addRoom} />
+            {rooms.map((roomItem, index) => {
+              return (
+                <Room
+                  key={index}
+                  id={index}
+                  title={roomItem.title}
+                  onJoin={joinRoom}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
