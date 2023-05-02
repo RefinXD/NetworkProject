@@ -189,7 +189,8 @@ io.on("connection", async (socket) => {
     const target = usernameMapping.get(receiver)
     console.log(sender,receiver)
     console.log("joining",target)
-    socket.join(target)
+    console.log(receiver)
+    socket.join(receiver)
     // io.in(target).emit("send_dm","test")
     // io.in(socket.id).emit("send_dm","test")
   })
@@ -201,7 +202,7 @@ io.on("connection", async (socket) => {
     const { message, username, room, __createdtime__ } = data;
     target_room = usernameMapping.get(room);
     console.log(1,message);
-    console.log(2,target_room);
+    console.log(2,target_room,room);
     console.log(3,username)
     new_data = {
       message:message,
@@ -209,12 +210,17 @@ io.on("connection", async (socket) => {
       username:idMapping.get(username),
       __createdtime__:__createdtime__
     }
+    //send to sender'sroom the user is joining
+    io.in(room).emit("echo_dm",new_data);
+    //send to receiver
     io.in(target_room).emit("receive_dm",new_data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))
     //   .catch((err) => console.log(err));
   });
-
+  socket.on("changeUser",()=>{
+    socket.emit("clear")
+  })
 
   socket.on("send_message", (data) => {
     const { message, username, room, __createdtime__ } = data;

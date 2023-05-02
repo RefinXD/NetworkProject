@@ -17,6 +17,7 @@ const SideBar = () => {
     setTarget(receiver);
     console.log(userDetail)
     let user = userDetail.nickname;
+    socket.emit("changeUser");
     socket.emit("user_join_dm",sender,receiver)
   }
   useEffect(() => {

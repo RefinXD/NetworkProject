@@ -14,7 +14,7 @@ const APP_SETTINGS: AppSettings = {
     BACKEND_URL: "",
   },
   DEV: {
-    BACKEND_URL: "http://172.20.10.12:2001",
+    BACKEND_URL: "http://172.20.10.4:2001",
   },
 };
 

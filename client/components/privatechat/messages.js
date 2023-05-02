@@ -14,10 +14,15 @@ const Messages = ({ socket }) => {
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
     
+
+
+    socket.on('clear',() =>{
+        setMessagesReceived([])
+    })
     socket.on('receive_dm', (data) => {
       console.log(data);
+      console.log(target)
       
-      if(data.username === target){
         setMessagesReceived((state) => [
           ...state,
           {
@@ -27,22 +32,23 @@ const Messages = ({ socket }) => {
           },
         ]);
       }
+    
+    );
+    socket.on('echo_dm', (data) => {
+      console.log("echo")
+      console.log(data);
+      if(userDetail.nickname == data.username)
+        setMessagesReceived((state) => [
+          ...state,
+          {
+            message: data.message,
+            username: data.username,
+            __createdtime__: data.__createdtime__,
+          },
+        ]);
+      
     });
 
-    socket.on('echo_dm', (data) => {
-      console.log(data);
-      
-      if(data.username === userDetail.nickname){
-        setMessagesReceived((state) => [
-          ...state,
-          {
-            message: data.message,
-            username: data.username,
-            __createdtime__: data.__createdtime__,
-          },
-        ]);
-      }
-    })
 
     // Remove event listener on component unmount
     return () => socket.off('receive_dm');
