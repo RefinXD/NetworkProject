@@ -6,6 +6,38 @@
     gap: 20px;
   }
   
+  .chatHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  
+  .chatName {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .addFriend {
+    margin-left: auto;
+  }
+  
+  .addFriend button {
+    background-color: #4285f4;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .addFriend button:hover {
+    background-color: #3367d6;
+  }
+
+  
   /* Room and users component */
   .roomAndUsersColumn {
     border-right: 1px solid #dfdfdf;

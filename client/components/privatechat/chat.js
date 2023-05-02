@@ -8,9 +8,9 @@ import { AppContext } from "../../context/state";
 import { useContext } from "react";
 const PrivateChat = ({ nickname, room }) => {
   // Add this -- our server will run on port 4000, so we connect to it from here
-  
+
   console.log("Chat page    ", nickname, "    ", room);
-  const {target, setTarget} = useContext(AppContext)
+  const { target, setTarget } = useContext(AppContext);
   return (
     <div
       // className={styles.chatContainer}
@@ -18,8 +18,14 @@ const PrivateChat = ({ nickname, room }) => {
     >
       {/* <RoomAndUsersColumn socket={socket} username={nickname} room={target} /> */}
 
-      <div className="blablabla">
-        <h2>{target}</h2>
+      <div className="">
+        <div class={styles.chatHeader}>
+          <div class={styles.chatName}>{target}</div>
+          <div class={styles.addFriend}>
+            <button>Add Friend</button>
+          </div>
+        </div>
+
         <MessagesReceived socket={socket} />
         <SendMessage socket={socket} username={socket.id} room={target} />
       </div>

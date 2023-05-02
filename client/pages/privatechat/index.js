@@ -9,7 +9,7 @@ const Page = () => {
     <>
       <AppWrapper>
         <NavBar />
-        <h1>Private Chat</h1>
+        <h2>Private Chat</h2>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <div style={{ flexBasis: "25%" }}>
             <SideBar />
