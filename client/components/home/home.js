@@ -17,7 +17,7 @@ const Home = () => {
   const [roomSearch, setRoomSearch] = useState({
     name: "",
   });
-  const [results, setResults] = useState({});
+  const [searchResults, setSearchResults] = useState({});
 
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
@@ -38,15 +38,8 @@ const Home = () => {
     }
   }, []);
 
-  const handleSearch = async () => {
-    const response = await getAllRoomWithName(roomSearch.name);
-    setResults(response.data);
-    console.log(results)
-  };
-
   const onSearch = (event) => {
     setRoomSearch({ name: event.target.value });
-    handleSearch();
     // console.log(roomSearch.name);
     // const res = await getAllRoomWithName(roomSearch.name);
   };
@@ -70,6 +63,16 @@ const Home = () => {
     });
     socket.emit("test", rooms);
   }
+
+  async function searchRoom(event) {
+    if (roomSearch.title !== "") {
+      // console.log(roomSearch.name)
+      const res = await getAllRoomWithName({ roomname: roomSearch.name });
+      console.log(res.data);
+    }
+    // event.preventDefault();
+  }
+
   return (
     <>
       <NavBar isLoggedIn={isLoggedIn} />
@@ -105,6 +108,10 @@ const Home = () => {
               );
             })}
           </div>
+
+          <button className={styles.addButton} onClick={searchRoom}>
+            Search
+          </button>
         </div>
       </div>
     </>

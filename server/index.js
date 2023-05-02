@@ -92,7 +92,7 @@ const io = new Server(server, {
       "http://192.168.1.41:3000",
       "http://192.168.1.33:3000",
       "http://172.20.10.4:3000",
-      "http://172.20.10.12:3000"
+      "http://172.20.10.12:3000",
     ],
     methods: ["GET", "POST"],
   },
@@ -146,8 +146,8 @@ io.on("connection", async (socket) => {
       newObj = { _id: usernameMapping.get(element), nickname: element };
       onlineObj.push(newObj);
     });
-    console.log("online",onlineObj)
-    socket.broadcast.emit("online_users",onlineObj);
+    console.log("online", onlineObj);
+    socket.broadcast.emit("online_users", onlineObj);
     socket.emit("online_users", onlineObj);
   });
   // const onlineUsers = await User.find({status: "Online"}).select({nickname: 1});
@@ -161,7 +161,6 @@ io.on("connection", async (socket) => {
     socket.emit("available_rooms", allRooms);
   });
 
-
   socket.on("join_room", (data) => {
     // console.log("data from join room",data)
     const { username, room } = data; // Data sent from client when join_room event emitted
@@ -169,9 +168,9 @@ io.on("connection", async (socket) => {
     chatRoom = room;
     allUsers.push({ id: socket.id, username, room });
     chatRoomUsers = allUsers.filter((user) => user.room === room);
-    console.log(chatRoomUsers)
+    console.log(chatRoomUsers);
     console.log("-----------chatroomuser-------", chatRoomUsers);
-    socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers)
+    socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers);
     //socket.to(room).emit("chatroom_users", chatRoomUsers);
     socket.emit("chatroom_users", chatRoomUsers);
     let __createdtime__ = Date.now(); // Current timestamp
@@ -183,38 +182,35 @@ io.on("connection", async (socket) => {
     }); // Join the user to a socket room
   });
 
-
-  socket.on("user_join_dm",(sender,receiver) =>{
-    console.log("socket of" ,idMapping.get(socket.id))
-    const target = usernameMapping.get(receiver)
-    console.log(sender,receiver)
-    console.log("joining",target)
-    socket.join(target)
+  socket.on("user_join_dm", (sender, receiver) => {
+    console.log("socket of", idMapping.get(socket.id));
+    const target = usernameMapping.get(receiver);
+    console.log(sender, receiver);
+    console.log("joining", target);
+    socket.join(target);
     // io.in(target).emit("send_dm","test")
     // io.in(socket.id).emit("send_dm","test")
-  })
-
+  });
 
   socket.on("send_dm", (data) => {
     console.log(data);
-    console.log("in send dm user:",socket.id)
+    console.log("in send dm user:", socket.id);
     const { message, username, room, __createdtime__ } = data;
     target_room = usernameMapping.get(room);
-    console.log(1,message);
-    console.log(2,target_room);
-    console.log(3,username)
+    console.log(1, message);
+    console.log(2, target_room);
+    console.log(3, username);
     new_data = {
-      message:message,
-      room:target_room,
-      username:idMapping.get(username),
-      __createdtime__:__createdtime__
-    }
-    io.in(target_room).emit("receive_dm",new_data); // Send to all users in room, including sender
+      message: message,
+      room: target_room,
+      username: idMapping.get(username),
+      __createdtime__: __createdtime__,
+    };
+    io.in(target_room).emit("receive_dm", new_data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))
     //   .catch((err) => console.log(err));
   });
-
 
   socket.on("send_message", (data) => {
     const { message, username, room, __createdtime__ } = data;
@@ -222,12 +218,11 @@ io.on("connection", async (socket) => {
     console.log(username);
     console.log(room);
     io.in(room).emit("receive_message", data);
-    io.in(room).emit("echo_dm",data); // Send to all users in room, including sender
+    io.in(room).emit("echo_dm", data); // Send to all users in room, including sender
     // harperSaveMessage(message, username, room, __createdtime__) // Save message in db
     //   .then((response) => console.log(response))
     //   .catch((err) => console.log(err));
   });
-
 
   socket.on("leave_room", (data) => {
     const { username, room } = data;
@@ -236,9 +231,9 @@ io.on("connection", async (socket) => {
     // Remove user from memory
     allUsers = leaveRoom(socket.id, allUsers);
     chatRoomUsers = allUsers.filter((user) => user.room === room);
-    console.log(chatRoomUsers)
+    console.log(chatRoomUsers);
     console.log("-----------chatroomuser-------", chatRoomUsers);
-    socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers)
+    socket.broadcast.to(room).emit("chatroom_users", chatRoomUsers);
     //socket.to(room).emit("chatroom_users", chatRoomUsers);
     socket.emit("chatroom_users", chatRoomUsers);
     socket.to(room).emit("receive_message", {
@@ -249,14 +244,13 @@ io.on("connection", async (socket) => {
     console.log(`${username} has left the chat`);
   });
 
-
   socket.on("logout", (name) => {
     console.log("logout");
     const targetUser = name;
     const targetIdx = connectedUsers.indexOf(targetUser);
-    console.log(targetIdx)
-    connectedUsers.splice(targetIdx,1);
-    console.log(connectedUsers)
+    console.log(targetIdx);
+    connectedUsers.splice(targetIdx, 1);
+    console.log(connectedUsers);
     idMapping.delete(usernameMapping.get(targetUser));
     usernameMapping.delete(targetUser);
     let onlineObj = [];
@@ -264,16 +258,15 @@ io.on("connection", async (socket) => {
       newObj = { _id: socket.id, nickname: element };
       onlineObj.push(newObj);
     });
-    socket.broadcast.emit("online_users",onlineObj);
+    socket.broadcast.emit("online_users", onlineObj);
     socket.emit("online_users", onlineObj);
   });
 
-
   socket.on("disconnect", async () => {
-    console.log("User disconnected from the chat",socket.id);
+    console.log("User disconnected from the chat", socket.id);
     const targetUser = idMapping.get(socket.id);
     const targetIdx = connectedUsers.indexOf(targetUser);
-    connectedUsers.splice(targetIdx,1);
+    connectedUsers.splice(targetIdx, 1);
     idMapping.delete(socket.id);
     usernameMapping.delete(targetUser);
     let onlineObj = [];
@@ -281,7 +274,7 @@ io.on("connection", async (socket) => {
       newObj = { _id: socket.id, nickname: element };
       onlineObj.push(newObj);
     });
-    socket.broadcast.emit("online_users",onlineObj);
+    socket.broadcast.emit("online_users", onlineObj);
     socket.emit("online_users", onlineObj);
     if (targetUser) {
       socket.to(chatRoom).emit("receive_message", {
