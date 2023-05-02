@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import RoomAndUsersColumn from "./home-sidebar"; // Add this
 import socket from "../../utils/Utils";
 import RoomComponent from "./room-component";
+import RoomSearchComponent from "./room-search-component";
 import Room from "./room";
 import NavBar from "../layout/navBar";
 
-import {createRoom} from "../../services/roomService";
+import {createRoom,getAllRoomsWithName} from "../../services/roomService";
 
 
 const Home = () => {
@@ -53,11 +54,21 @@ const Home = () => {
   async function addRoom(newRoom) {
     console.log("newroom", newRoom.title);
     await createRoom({roomname: newRoom.title});
-    setRooms((prevRooms) => {
-      return [...prevRooms, newRoom];
-    });
+    // setRooms((prevRooms) => {
+    //   return [...prevRooms, newRoom];
+    // });
     socket.emit("test",rooms)
   }
+
+  async function searchRoom(newRoom) {
+   
+    const filterroom = await getAllRoomsWithName({roomname: newRoom.title});
+    console.log("xxx", filterroom);
+    //setRooms(filterroom);
+    
+  }
+
+  
   return (
     <>
     <NavBar isLoggedIn={isLoggedIn}/>
@@ -76,6 +87,7 @@ const Home = () => {
 
         <div>
           <RoomComponent onAdd={addRoom} />
+          <RoomSearchComponent onSearch={searchRoom} />
           {rooms.map((roomItem, index) => {
             return (
               <Room
