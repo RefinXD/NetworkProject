@@ -19,7 +19,7 @@ const Home = () => {
   });
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
-    searchRoom();
+    //searchRoom();
     socket.connect();
     socket.emit("updateUsernames", userDetail);
     //console.log(userDetail);
@@ -52,7 +52,7 @@ const Home = () => {
 
   async function searchRoom(event) {
     if (roomSearch.title !== "") {
-      const res = await getAllRoomWithName({ roomname: roomSearch.name });
+      const res = await getAllRoomWithName(roomSearch.name);
       let roomList = [];
       res.data.forEach((element) => {
         roomList.push({ title: element.roomname });

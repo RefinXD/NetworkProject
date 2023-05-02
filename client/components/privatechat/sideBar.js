@@ -1,37 +1,55 @@
 import styles from "./styles.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRouter } from "next/router";
+
 import Swal from "sweetalert2";
 import socket from "../../utils/Utils";
 import { AppContext } from "../../context/state";
 import { useContext } from "react";
+import { useRouter } from "next/router";
+
 const SideBar = () => {
   const [availableUser, SetAvailableUser] = useState([]);
-  const [currentChatUser, SetCurrentChatUser] = useState("");
-  const {target, setTarget} = useContext(AppContext)
   //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
   const userDetail = JSON.parse(localStorage.getItem("user"));
-  function test(sender,receiver){
-    SetCurrentChatUser(receiver)
-    setTarget(receiver);
-    console.log(userDetail)
-    let user = userDetail.nickname;
-    socket.emit("changeUser");
-    socket.emit("user_join_dm",sender,receiver)
-  }
+
+
+  const router = useRouter();
+  // function test(sender,receiver){
+  //   SetCurrentChatUser(receiver)
+  //   setTarget(receiver);
+  //   console.log(userDetail)
+  //   let user = userDetail.nickname;
+  //   socket.emit("changeUser");
+  //   socket.emit("user_join_dm",sender,receiver)
+  // }
   useEffect(() => {
-    const userDetail = localStorage.getItem("user");
+    
     socket.emit("updateUsernames",userDetail)
+    console.log("asdasdsadasd",userDetail)
     socket.on("online_users", (data) => {
-        console.log(data)
+
+        console.log("ewqrwer",data)
         SetAvailableUser([])
         SetAvailableUser(data);
     });
+  }
 
-    
-    return () => socket.off("online_users");
-  }, []);
+, []);
+
+async function startChat() {
+ 
+  if(userDetail.id > user.id){
+    const uniqueroom = userDetail.id + user.id
+  }else{
+    const uniqueroom =   user.id + userDetail.id
+  } 
+  await createDirectRoom({ roomname: uniqueroom});
+  router.push({
+    pathname: `/privatechat`,
+    query: { username: userDetail.nickname, room: uniqueroom },
+  });
+}
 
   //console.log("roomuser",roomUsers);
   // const leaveRoom = () => {
@@ -51,7 +69,11 @@ const SideBar = () => {
        */}
       <div className={styles.ListofOnlineUser}>
         {availableUser.map((user) => (
-          <div key={user._id}>{user.nickname} <button onClick={test.bind(this,userDetail.nickname,user.nickname)}>chat</button></div>
+          // <div key={user._id}>{user.nickname} <button onClick={test.bind(this,userDetail.nickname,user.nickname)}>chat</button>
+          // </div>
+          <div key={user.id}>{user.nickname} 
+          <button onClick={startChat}>chat</button>
+          </div>
         ))}
       </div>
 

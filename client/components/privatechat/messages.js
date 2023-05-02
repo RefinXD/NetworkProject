@@ -1,57 +1,29 @@
 import styles from './styles.module.css';
 import { useState, useEffect, useRef } from 'react';
 import socket from '../../utils/Utils';
-import { AppContext } from "../../context/state";
-import { useContext } from "react";
+
 
 
 const Messages = ({ socket }) => {
-  const {target, setTarget} = useContext(AppContext)
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null); // Add this
-  console.log("testtest01")
-  const userDetail = JSON.parse(localStorage.getItem("user"));
+  // console.log("testtest01")
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
-    
-
-
-    socket.on('clear',() =>{
-        setMessagesReceived([])
-    })
-    socket.on('receive_dm', (data) => {
-      console.log(data);
-      console.log(target)
-      if(data.username === target)
-        setMessagesReceived((state) => [
-          ...state,
-          {
-            message: data.message,
-            username: data.username,
-            __createdtime__: data.__createdtime__,
-          },
-        ]);
-      }
-    
-    );
-    socket.on('echo_dm', (data) => {
-      console.log("echo")
-      console.log(data);
-      if(userDetail.nickname == data.username)
-        setMessagesReceived((state) => [
-          ...state,
-          {
-            message: data.message,
-            username: data.username,
-            __createdtime__: data.__createdtime__,
-          },
-        ]);
-      
+    socket.on('receive_message', (data) => {
+      // console.log(data);
+      setMessagesReceived((state) => [
+        ...state,
+        {
+          message: data.message,
+          username: data.username,
+          __createdtime__: data.__createdtime__,
+        },
+      ]);
     });
 
-
     // Remove event listener on component unmount
-    return () => socket.off('receive_dm');
+    return () => socket.off('receive_message');
   }, [socket]);
 
   // Add this

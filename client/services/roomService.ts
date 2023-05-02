@@ -103,6 +103,31 @@ export const createRoom = async (data: RoomInterface) => {
 
   return res;
 };
+export const createDirectRoom = async (data: RoomInterface) => {
+  const configs =
+    localStorage.getItem("accessToken") != undefined
+      ? {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      : {};
+  const axios_res = await axios.post(
+    `${appConfig.BACKEND_URL}/api/directroom`,
+    data,
+    configs
+  );
+  const res = axios_res.data as ApiResponseInterface<RoomInterface>;
+  if (!isHttpStatusOk(res.code))
+    throw new ApiErrorResponse(
+      res.message ?? "",
+      res.code,
+      res.errors ?? undefined,
+      res.tag ?? ""
+    );
+
+  return res;
+};
 
 export const updateRoomById = async (id: string, data: any) => {
   const configs =

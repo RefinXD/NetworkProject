@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { getAllRoomWithName } from "../../services/roomService";
 
 function RoomComponent(props) {
   const [room, setRoom] = useState({

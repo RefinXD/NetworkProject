@@ -19,14 +19,24 @@ const PrivateChat = ({ nickname, room }) => {
   const { target, setTarget } = useContext(AppContext);
   const [userDetail, setUserDetail] = useState({});
   const [isFriend, setIsFriend] = useState(true);
-  console.log(target);
+  console.log("nickname",room);
+
+ 
+    console.log("nickname2",room);
+
   useEffect(() => {
-    const userDetail = localStorage.getItem("user");
+    const userDetail = localStorage.getItem("user");   
+    // Remove event listener on component unmount
     if (userDetail) {
       setUserDetail(JSON.parse(userDetail));
     }
+
   }, []);
-  // console.log("privatechat", userDetail._id);
+
+ 
+  
+
+//----------------------------------------
   const checkIsFriend = async () => {
     const userFriends = await getFriendsById(userDetail._id);
     // console.log("userFriends", friendlists.data);
@@ -44,6 +54,8 @@ const PrivateChat = ({ nickname, room }) => {
     const addFriend = await addFriendByFriendId(userDetail._id, res.data._id);
     console.log(addFriend);
   };
+
+  //----------------------------------------
 
   return (
     <div

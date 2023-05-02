@@ -5,6 +5,7 @@ import AppWrapper from "../../context/state";
 import socket from "../../utils/Utils";
 
 const Page = () => {
+  
   return (
     <>
       <AppWrapper>
@@ -15,7 +16,7 @@ const Page = () => {
             <SideBar />
           </div>
           <div style={{ flexBasis: "75%" }}>
-            <PrivateChat sender={socket.id} target={""} />
+          {/* <PrivateChat sender={""} target={""} /> */}
           </div>
         </div>
       </AppWrapper>

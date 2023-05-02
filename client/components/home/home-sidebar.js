@@ -13,6 +13,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
     socket.emit("test", roomUsers);
 
     socket.on("online_users", (data) => {
+      console.log("km;")
       setRoomUsers(data);
     });
   });
@@ -47,7 +48,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
 
       <ul className={styles.ListofOnlineUser}>
         {roomUsers.map((user) => (
-          <li key={user._id}>{user.nickname}</li>
+          <li key={user.id}>{user.nickname}</li>
         ))}
       </ul>
 
