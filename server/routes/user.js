@@ -12,6 +12,7 @@ router.get("/user/:nickname", authUser, userController.getUserByNickname);
 router.get("/onlineUsers", authUser, userController.getAllOnlineUsers);
 router.get("/user/:id", authUser, userController.getUserById);
 router.get("/user/friends/:id", authUser, userController.getFriendById);
+router.get("/user/friendsname/:id", authUser, userController.getFriendNameById);
 router.put("/user/:id", authUser, userController.updateUserById);
 router.post("/user/friends/:id", authUser, userController.addFriendById);
 

@@ -234,7 +234,7 @@ export const getFriendsNameById = async (id: string) => {
         }
       : {};
   const axios_res = await axios.get(
-    `${appConfig.BACKEND_URL}/api/user/friends/${id}`,
+    `${appConfig.BACKEND_URL}/api/user/friendsname/${id}`,
     configs
   );
   const res = axios_res.data as ApiResponseInterface<String>;

@@ -252,6 +252,36 @@ const UserController = {
     });
     res.json(result);
   },
+  
+  /**
+   * getFriendNameById
+   * @param {import('express').Request} req
+   * @param {import('express').Response} res
+   * @param {import('express').NextFunction} next
+  */
+ async getFriendNameById(req, res, next) {
+   const result = await tryCatchMongooseService(async () => {
+     const userId = req.params.id;
+     const user = await User.findById(userId);
+
+     const friendNicknames = await Promise.all(user.friends.map(async friendId => {
+      const friend = await User.findById(friendId);
+      return friend.nickname;
+    }));
+    const userWithNicknames = {
+      ...user.toObject(),
+      friends: friendNicknames
+    };
+
+     return {
+       code: 200,
+       data: userWithNicknames.friends,
+       message: "",
+      };
+    });
+    res.json(result);
+
+  },
 };
 
 module.exports = UserController;
