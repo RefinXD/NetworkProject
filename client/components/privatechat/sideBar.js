@@ -17,6 +17,7 @@ const SideBar = () => {
     setTarget(receiver);
     console.log(userDetail)
     let user = userDetail.nickname;
+    socket.emit("changeUser");
     socket.emit("user_join_dm",sender,receiver)
   }
   useEffect(() => {
@@ -40,19 +41,21 @@ const SideBar = () => {
   // };
   
   return (
-    <div className={styles.roomAndUsersColumn}>
+    // <div className={styles.roomAndUsersColumn}>
+    <div>
       {/* <h1 className={styles.usernameTitle}>{usernameTitle}</h1> */}
       {/* <h2 className={styles.nicknameTitle}>{nicknameTitle}</h2> */}
-
+      {/* <div id="currentUser">
+        Hello {userDetail.nickname}, you are currently chatting with {currentChatUser}
+      </div>
+       */}
       <div className={styles.ListofOnlineUser}>
         {availableUser.map((user) => (
           <div key={user._id}>{user.nickname} <button onClick={test.bind(this,userDetail.nickname,user.nickname)}>chat</button></div>
         ))}
       </div>
 
-      <div id="currentUser">
-        Hello {userDetail.nickname}, you are currently chatting with {currentChatUser}
-      </div>
+      
     </div>
   );
 };

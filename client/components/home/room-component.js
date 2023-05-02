@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styles from "./styles.module.css";
+import { getAllRoomWithName } from "../../services/roomService";
+
 function RoomComponent(props) {
   const [room, setRoom] = useState({
-    title: ""
+    title: "",
   });
+
 
   const onChange = (e) => {
     setRoom((prev) => ({
@@ -12,15 +15,15 @@ function RoomComponent(props) {
     }));
   };
 
-  function submitRoom(event) {
-    if(room.title!==""){
-    props.onAdd(room);
-    setRoom({
-      title: "",
-    });
-}
-    event.preventDefault();
 
+  function submitRoom(event) {
+    if (room.title !== "") {
+      props.onAdd(room);
+      setRoom({
+        title: "",
+      });
+    }
+    event.preventDefault();
   }
 
   return (
@@ -33,7 +36,10 @@ function RoomComponent(props) {
           value={room.title}
           placeholder="Title"
         />
-        <button className={styles.addButton} onClick={submitRoom}>Add</button>
+
+        <button className={styles.addButton} onClick={submitRoom}>
+          Add
+        </button>
       </form>
     </div>
   );
