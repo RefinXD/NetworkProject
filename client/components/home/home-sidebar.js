@@ -51,7 +51,7 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
           </ul>
       </div>
       <div>
-      <h5>Friends</h5>
+      <h5>Follows</h5>
       <ul className={styles.ListofFollowingUser}>
         {followings.map((following) => {
           const isActive = roomUsers.some((user) => user.nickname === following);
