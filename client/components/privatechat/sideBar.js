@@ -13,16 +13,16 @@ const SideBar = () => {
   const { target, setTarget } = useContext(AppContext);
   //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
   const userDetail= JSON.parse(localStorage.getItem("user"));
+ 
   function test(sender, receiver) {
     SetCurrentChatUser(receiver);
     setTarget(receiver);
     console.log(userDetail);
-    let user = userDetail.nickname;
     socket.emit("changeUser");
     socket.emit("user_join_dm", sender, receiver);
   }
   useEffect(() => {
-    const userDetail = localStorage.getItem("user");
+    
     socket.emit("updateUsernames",userDetail)
     socket.on("online_users", (data) => {
       console.log(data);
@@ -34,11 +34,12 @@ const SideBar = () => {
 , []);
 
 async function startChat() {
+  console.log(userDetail._id , user.id)
  
-  if(userDetail.id > user.id){
-    const uniqueroom = userDetail.id + user.id
+  if(userDetail._id> user.id){
+    const uniqueroom =  userDetail._id + user.id
   }else{
-    const uniqueroom =   user.id + userDetail.id
+    const uniqueroom =   user.id + userDetail._id
   } 
   await createDirectRoom({ roomname: uniqueroom});
   router.push({
@@ -68,7 +69,7 @@ async function startChat() {
           <div key={user._id}>
             {user.nickname}{" "}
             <button
-              onClick={test.bind(this, userDetail.nickname, user.nickname)}
+              onClick={startChat}
             >
               chat
             </button>

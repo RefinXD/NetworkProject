@@ -19,7 +19,7 @@ const Home = () => {
   });
   useEffect(() => {
     const userDetail = localStorage.getItem("user");
-    //searchRoom();
+    searchRoom();
     socket.connect();
     socket.emit("updateUsernames", userDetail);
     //console.log(userDetail);

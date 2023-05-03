@@ -16,7 +16,7 @@ const Page = () => {
             <SideBar />
           </div>
           <div style={{ flexBasis: "75%" }}>
-          {/* <PrivateChat sender={""} target={""} /> */}
+          <PrivateChat sender={socket.id} target={""} />
           </div>
         </div>
       </AppWrapper>

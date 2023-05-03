@@ -14,12 +14,13 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
 
   useEffect(() => {
     socket.emit("test", roomUsers);
-
     socket.on("online_users", (data) => {
-      
+      console.log(data)
       setRoomUsers(data);
     });
   });
+
+
 
   async function handleGetFriend(event) {
     try {
@@ -39,21 +40,8 @@ const RoomAndUsers = ({ socket, nicknameTitle, usernameTitle }) => {
   
 
 
-  // handleGetFriend();
   return (
     <div className={styles.roomAndUsersColumn}>
-      <h1 className={styles.usernameTitle}>{usernameTitle}</h1>
-      <h2 className={styles.nicknameTitle}>{nicknameTitle}</h2>
-
-      <ul className={styles.ListofOnlineUser}>
-        {roomUsers.map((user) => (
-          <li key={user.id}>{user.nickname}</li>
-        ))}
-      </ul>
-
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        logout
-      </button>
       <h2 className={styles.nicknameTitle}>Hello, {nicknameTitle}</h2>
       <h3 className={styles.usernameTitle}>@{usernameTitle}</h3>
       <div>
