@@ -64,7 +64,7 @@
 }
 
 .msgText {
-  color: #333;
+  color: #262222;
   font-size: 1rem;
 }
 
@@ -111,4 +111,3 @@
 .leaveButton:hover {
   background-color: #ccc;
 }
-

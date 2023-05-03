@@ -64,10 +64,11 @@ export const getAllRoomWithName = async (name: String) => {
       : {};
       
   const axios_res = await axios.get(
-    `${appConfig.BACKEND_URL}/api/search?name=${name}`,
+    `${appConfig.BACKEND_URL}/api/search?name=${name.toString()}`,
     configs
   );
-  const res = axios_res.data as ApiResponseInterface<String>;
+  const res = axios_res.data as ApiResponseInterface<RoomInterface>;
+  // console.log(res)
   if (!isHttpStatusOk(res.code))
     throw new ApiErrorResponse(
       res.message ?? "",

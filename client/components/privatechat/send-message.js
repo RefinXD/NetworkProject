@@ -1,17 +1,16 @@
-import styles from './styles.module.css';
-import React, { useState } from 'react'
-
+import styles from "./styles.module.css";
+import React, { useState } from "react";
 
 const SendMessage = ({ socket, username, room }) => {
-  const [message, setMessage] = useState('');
-  console.log(username,room)
-  console.log("send Message   ",username,room,socket);
+  const [message, setMessage] = useState("");
+  console.log(username, room);
+  console.log("send Message   ", username, room, socket);
   const sendMessage = () => {
-    if (message !== '') {
+    if (message !== "") {
       const __createdtime__ = Date.now();
       // Send message to server. We can't specify who we send the message to from the frontend. We can only send to server. Server can then send message to rest of users in room
-      socket.emit('send_dm', { username, room, message, __createdtime__ });
-      setMessage('');
+      socket.emit("send_dm", { username, room, message, __createdtime__ });
+      setMessage("");
     }
   };
 
@@ -32,11 +31,11 @@ const SendMessage = ({ socket, username, room }) => {
     <div className={styles.sendMessageContainer}>
       <input
         className={styles.messageInput}
-        placeholder='Message...'
+        placeholder="Message..."
         onChange={(e) => setMessage(e.target.value)}
         value={message}
       />
-      <button className='btn btn-primary' onClick={sendMessage}>
+      <button className="btn btn-primary" onClick={sendMessage}>
         Send Message
       </button>
     </div>

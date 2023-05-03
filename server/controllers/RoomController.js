@@ -49,37 +49,35 @@ const RoomController = {
     res.json(result);
   },
 
-/**
+  /**
    * getAllRooms
    * @param {import('express').Request} req
    * @param {import('express').Response} res
    * @param {import('express').NextFunction} next
    */
-async getAllRoomsWithName(req, res, next) {
-  const result = await tryCatchMongooseService(async () => {
-    const roomName = req.query.name;
-    //console.log(req)
-    //console.log(req.query.name)
-    let regex = "";
-    if (roomName !== undefined) {
+  async getAllRoomsWithName(req, res, next) {
+    const result = await tryCatchMongooseService(async () => {
+      const roomName = req.query.name;
+      //console.log(req)
+      //console.log(req.query.name)
+      let regex = "";
+      if (roomName !== undefined) {
         regex = new RegExp(`${roomName}`, "i");
-    }
-    let value = {};
-    if (roomName !== undefined) {
+      }
+      let value = {};
+      if (roomName !== undefined) {
         value["roomname"] = { $regex: regex };
-    }
-    const rooms = await Room.find(value);
-    return {
-      code: 200,
-      data: rooms,
-      message: "",
-    };
-  });
-  res.json(result);
-},
-
-  
-
+      }
+      const rooms = await Room.find(value);
+      // console.log(rooms.roomname);
+      return {
+        code: 200,
+        data: rooms,
+        message: "",
+      };
+    });
+    res.json(result);
+  },
 
   /**
    * deleteAllRooms
@@ -159,7 +157,6 @@ async getAllRoomsWithName(req, res, next) {
     });
     res.json(result);
   },
-
 };
 
 module.exports = RoomController;
