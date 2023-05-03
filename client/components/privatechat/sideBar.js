@@ -11,22 +11,22 @@ const SideBar = () => {
   const [availableUser, SetAvailableUser] = useState([]);
   const [currentChatUser, SetCurrentChatUser] = useState("");
   const { target, setTarget } = useContext(AppContext);
-  //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
   const userDetail= JSON.parse(localStorage.getItem("user"));
+  //console.log("roomAnduser",socket,"  ",nicknameTitle,"    ",usernameTitle);
   function test(sender, receiver) {
+    const userDetail= JSON.parse(localStorage.getItem("user"));
     SetCurrentChatUser(receiver);
+    console.log("ไอสัส")
     setTarget(receiver);
     console.log(userDetail);
-    let user = userDetail.nickname;
     socket.emit("changeUser");
     socket.emit("user_join_dm", sender, receiver);
   }
   useEffect(() => {
-    const userDetail = localStorage.getItem("user");
+    const userDetail= localStorage.getItem("user");
     socket.emit("updateUsernames", userDetail);
     socket.on("online_users", (data) => {
       console.log(data);
-      SetAvailableUser([]);
       SetAvailableUser(data);
     });
 
@@ -54,7 +54,7 @@ const SideBar = () => {
           <div key={user._id}>
             {user.nickname}{" "}
             <button
-              onClick={test.bind(this, userDetail.nickname, user.nickname)}
+              onClick={()=>test( userDetail.nickname, user.nickname)}
             >
               chat
             </button>

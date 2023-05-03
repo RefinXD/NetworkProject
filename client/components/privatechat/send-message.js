@@ -14,19 +14,6 @@ const SendMessage = ({ socket, username, room }) => {
     }
   };
 
-  // onMessage(content) {
-  //   if (this.selectedUser) {
-  //     socket.emit("private message", {
-  //       content,
-  //       to: this.selectedUser.userID,
-  //     });
-  //     this.selectedUser.messages.push({
-  //       content,
-  //       fromSelf: true,
-  //     });
-  //   }
-  // }
-
   return (
     <div className={styles.sendMessageContainer}>
       <input
