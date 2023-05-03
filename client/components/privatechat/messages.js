@@ -9,18 +9,17 @@ const Messages = ({ socket }) => {
   const {target, setTarget} = useContext(AppContext)
   const [messagesRecieved, setMessagesReceived] = useState([]);
   const messagesColumnRef = useRef(null); // Add this
-  console.log("testtest01")
-  const userDetail = JSON.parse(localStorage.getItem("user"));
   // Runs whenever a socket event is recieved from the server
   useEffect(() => {
-    
+    const userDetail = JSON.parse(localStorage.getItem("user"));
 
 
     socket.on('clear',() =>{
         setMessagesReceived([])
     })
     socket.on('receive_dm', (data) => {
-      console.log(data);
+      console.log("received dm")
+      console.log(data)
       console.log(target)
       if(data.username === target)
         setMessagesReceived((state) => [
@@ -37,7 +36,7 @@ const Messages = ({ socket }) => {
     socket.on('echo_dm', (data) => {
       console.log("echo")
       console.log(data);
-      if(userDetail.nickname == data.username)
+      if(userDetail.nickname === data.username)
         setMessagesReceived((state) => [
           ...state,
           {
@@ -51,8 +50,8 @@ const Messages = ({ socket }) => {
 
 
     // Remove event listener on component unmount
-    return () => socket.off('receive_dm');
-  }, [socket]);
+    return () => {socket.off('receive_dm');socket.off('echo_dm');socket.off('clear')}
+  }, [socket,target]);
 
   // Add this
 
