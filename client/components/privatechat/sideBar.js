@@ -51,10 +51,10 @@ const SideBar = () => {
        */}
       <div className={styles.ListofOnlineUser}>
         {availableUser.map((user) => (
-          <div key={user._id}>
+          <div classname={styles.userChatList} key={user._id}>
             {user.nickname}{" "}
             <button
-              onClick={()=>test( userDetail.nickname, user.nickname)}
+              className={styles.chatButton } onClick={()=>test( userDetail.nickname, user.nickname)}
             >
               chat
             </button>

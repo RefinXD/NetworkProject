@@ -95,3 +95,40 @@
     border: 1px solid rgb(153, 217, 234);
     font-size: 0.9rem;
   }
+
+  .sendButton {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sendButton:hover {
+    background-color: #ccc;
+  }  
+
+  .chatButton {
+    padding: 5px;
+    font-size: 14px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .chatButton:hover {
+    background-color: #ccc;
+  }
+
+  .userChatList{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+  }
